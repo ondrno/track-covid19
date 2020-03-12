@@ -1,0 +1,5 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+# m h dom mon dow user   command
+6 10,22 * * * python /app/cov19.py /app/log/cov19_statistics.log >/proc/1/fd/1 2>/proc/1/fd/2
+# An empty line is required at the end of this file for a valid cron file.
