@@ -46,3 +46,12 @@ def test_get_data_austria_returns_empty_list():
         data = c.get_data_austria()
         assert data == []
 
+
+@responses.activate
+def test_get_data_switzerland_returns_values():
+    c = Cov19Statistics()
+    with open("{}/res/ch_fallzahlen.html".format(base_path)) as f:
+        body = f.read()
+        responses.add(responses.GET, c.url_ch, body=body, status=200)
+        data = c.get_data_switzerland()
+        assert data == [1359, 11]
