@@ -49,9 +49,9 @@ jobs:
         # Choose whether to include file with no URLs in the prints.
         print_all: # optional
         # If a request fails, retry this number of times. Defaults to 1
-        retry_count: # optional, default is 1
+        retry_count: 1 # optional, default is 1
         # The timeout (seconds) to provide to requests to wait for a response.
-        timeout: # optional, default is 5
+        timeout: 5 # optional, default is 5
         # A comma seperated links to exclude during URL checks.
         white_listed_urls: # optional, default is
-        # A comma seperat
+
