@@ -12,6 +12,7 @@ class Cov19Statistics:
         self.log_file = pathlib.Path(log_file)
         self.url_de = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
         self.url_at = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
+        self.url_ch = "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html"
         self.statistics = []
         self.do_run = False
 
@@ -32,7 +33,8 @@ class Cov19Statistics:
         with open(self.log_file, 'a') as f:
             if header:
                 f.write(header + "\n")
-            f.write(statistics + "\n")
+            for stat in statistics:
+                f.write(stat + "\n")
 
     def get_todays_statistics(self) -> str:
         today = datetime.now()
@@ -44,12 +46,18 @@ class Cov19Statistics:
         at_data = self.get_data_austria()
         at_as_str = self._list2str(at_data)
 
-        stats = "{};{};{};{};{}".format(today_as_str, "DE", de_as_str, "AT", at_as_str)
+        ch_data = self.get_data_switzerland()
+        ch_as_str = self._list2str(ch_data)
+
+        stats = list()
+        stats.append("{};{};{}".format(today_as_str, "DE", de_as_str))
+        stats.append("{};{};{}".format(today_as_str, "AT", at_as_str))
+        stats.append("{};{};{}".format(today_as_str, "CH", ch_as_str))
         return stats
 
     @staticmethod
     def get_header_info():
-        return "year;month;day;hour;minute;DE;cases;dead;AT;cases;recovered;dead"
+        return "year;month;day;hour;minute;country;cases;dead;recovered"
 
     def get_data_germany(self):
         stats = []
@@ -84,11 +92,36 @@ class Cov19Statistics:
                 recovered = int(m.group(2))
                 death = int(m.group(3))
                 stats.append(cases)
-                stats.append(recovered)
                 stats.append(death)
+                stats.append(recovered)
                 break
         if not stats:
             logger.error("Could not obtain statistics for Austria")
+        return stats
+
+    def get_data_switzerland(self):
+        stats = []
+        response = requests.get(self.url_ch)
+        soup = BeautifulSoup(response.text, "html.parser")
+        cases = None
+        dead = None
+        for p in soup.find_all('p'):
+            m = re.search(r'Positiv getestet:\s*(\d+)\s+Personen', str(p), re.I | re.M)
+            if m:
+                cases = int(m.group(1))
+                stats.append(cases)
+                next
+
+            m = re.search(r'Verstorben:.+?(\d+)\s+Personen', str(p), re.I | re.M)
+            if m:
+                dead = int(m.group(1))
+                stats.append(dead)
+
+            if cases and dead:
+                break
+
+        if not stats:
+            logger.error("Could not obtain statistics for Switzerland")
         return stats
 
     def run(self):
@@ -100,7 +133,7 @@ if __name__ == "__main__":
 
     version = "1.0.1"
     parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection "
-                                                 "rate in Germany and Austria")
+                                                 "rate in Germany, Austria, Switzerland")
     parser.add_argument("--version", action='version', version=version)
     parser.add_argument("log_file", default="cov19_statistics.log", help="the file to log statistics into", type=str)
     args = parser.parse_args()
