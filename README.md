@@ -1,3 +1,7 @@
+![Python application](https://github.com/ondrno/track-covid19/workflows/Python%20application/badge.svg?branch=master)
+
+----
+
 # covid19
 python program to track the covid-19 infection rate in Germany and Austria.
 
