@@ -7,7 +7,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
+
 
 jobs:
   build:
@@ -35,3 +35,23 @@ jobs:
       run: |
         pip install pytest
         python -m pytest tests
+    - name: URLs-checker
+      uses: urlstechie/URLs-checker@0.1.6
+      with:
+        # A project to clone. If not provided, assumes already cloned in the present working directory.
+        git_path: # optional
+        # If a project (git_path) is defined, use this branch. Defaults to master
+        branch: # optional, default is master
+        # Cleanup (delete) repository to check after doing so (appropriate for when clone is done)
+        cleanup: # optional
+        # A comma-separated list of file types to cover in the URL checks
+        file_types: # optional, default is .md,.py,.rst,.html
+        # Choose whether to include file with no URLs in the prints.
+        print_all: # optional
+        # If a request fails, retry this number of times. Defaults to 1
+        retry_count: 1 # optional, default is 1
+        # The timeout (seconds) to provide to requests to wait for a response.
+        timeout: 5 # optional, default is 5
+        # A comma seperated links to exclude during URL checks.
+        white_listed_urls: # optional, default is
+

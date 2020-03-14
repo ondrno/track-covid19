@@ -13,6 +13,7 @@ class Cov19Statistics:
         self.url_de = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
         self.url_at = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
         self.url_ch = "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html"
+        self.url_uk = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data"
         self.statistics = []
         self.do_run = False
 
@@ -49,15 +50,19 @@ class Cov19Statistics:
         ch_data = self.get_data_switzerland()
         ch_as_str = self._list2str(ch_data)
 
+        uk_data = self.get_data_united_kingdom()
+        uk_as_str = self._list2str(uk_data)
+
         stats = list()
         stats.append("{};{};{}".format(today_as_str, "DE", de_as_str))
         stats.append("{};{};{}".format(today_as_str, "AT", at_as_str))
         stats.append("{};{};{}".format(today_as_str, "CH", ch_as_str))
+        stats.append("{};{};{}".format(today_as_str, "UK", uk_as_str))
         return stats
 
     @staticmethod
     def get_header_info():
-        return "year;month;day;hour;minute;country;cases;dead;recovered"
+        return "year;month;day;hour;minute;country;cases;deaths;recovered"
 
     def get_data_germany(self):
         stats = []
@@ -69,10 +74,10 @@ class Cov19Statistics:
             m = re.match(r'([\d\.]+)\s*\(([\d\.]+)\)', raw_cases)
             if m:
                 cases = self._str2int(m.group(1))
-                death = self._str2int(m.group(2))
+                deaths = self._str2int(m.group(2))
 
             stats.append(cases)
-            stats.append(death)
+            stats.append(deaths)
         except ValueError:
             pass
 
@@ -90,9 +95,9 @@ class Cov19Statistics:
             if m:
                 cases = int(m.group(1))
                 recovered = int(m.group(2))
-                death = int(m.group(3))
+                deaths = int(m.group(3))
                 stats.append(cases)
-                stats.append(death)
+                stats.append(deaths)
                 stats.append(recovered)
                 break
         if not stats:
@@ -104,7 +109,7 @@ class Cov19Statistics:
         response = requests.get(self.url_ch)
         soup = BeautifulSoup(response.text, "html.parser")
         cases = None
-        dead = None
+        deaths = None
         for p in soup.find_all('p'):
             m = re.search(r'Positiv getestet:\s*(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
@@ -114,14 +119,29 @@ class Cov19Statistics:
 
             m = re.search(r'Verstorben:.+?(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
-                dead = int(m.group(1))
-                stats.append(dead)
+                deaths = int(m.group(1))
+                stats.append(deaths)
 
-            if cases and dead:
+            if cases and deaths:
                 break
 
         if not stats:
             logger.error("Could not obtain statistics for Switzerland")
+        return stats
+
+    def get_data_united_kingdom(self):
+        stats = []
+        try:
+            tables = pd.read_excel(self.url_uk)
+            cases = tables.iloc[0]['TotalUKCases']
+            deaths = tables.iloc[0]['TotalUKDeaths']
+            stats.append(int(cases))
+            stats.append(int(deaths))
+        except KeyError:
+            pass
+
+        if not stats:
+            logger.error("Could not obtain statistics for United Kingdom")
         return stats
 
     def run(self):
@@ -131,9 +151,9 @@ class Cov19Statistics:
 if __name__ == "__main__":
     import argparse
 
-    version = "1.0.1"
+    version = "1.0.2"
     parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection "
-                                                 "rate in Germany, Austria, Switzerland")
+                                                 "rate in Germany, Austria, Switzerland, United Kingdom")
     parser.add_argument("--version", action='version', version=version)
     parser.add_argument("log_file", default="cov19_statistics.log", help="the file to log statistics into", type=str)
     args = parser.parse_args()
