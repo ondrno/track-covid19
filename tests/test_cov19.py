@@ -63,3 +63,13 @@ def test_get_data_uk_returns_values():
     c.url_uk = "{}/res/uk_fallzahlen.xlsx".format(base_path)
     data = c.get_data_united_kingdom()
     assert data == [797, 10]
+
+
+@responses.activate
+def test_get_data_us_returns_values():
+    c = Cov19Statistics()
+    with open("{}/res/us_fallzahlen.html".format(base_path)) as f:
+        body = f.read()
+        responses.add(responses.GET, c.url_us, body=body, status=200)
+        data = c.get_data_united_states()
+        assert data == [1629, 41]

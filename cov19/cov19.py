@@ -14,6 +14,7 @@ class Cov19Statistics:
         self.url_at = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
         self.url_ch = "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html"
         self.url_uk = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data"
+        self.url_us = "https://www.cdc.gov/coronavirus/2019-ncov/cases-in-us.html"
         self.statistics = []
         self.do_run = False
 
@@ -53,11 +54,15 @@ class Cov19Statistics:
         uk_data = self.get_data_united_kingdom()
         uk_as_str = self._list2str(uk_data)
 
+        us_data = self.get_data_united_states()
+        us_as_str = self._list2str(us_data)
+
         stats = list()
         stats.append("{};{};{}".format(today_as_str, "DE", de_as_str))
         stats.append("{};{};{}".format(today_as_str, "AT", at_as_str))
         stats.append("{};{};{}".format(today_as_str, "CH", ch_as_str))
         stats.append("{};{};{}".format(today_as_str, "UK", uk_as_str))
+        stats.append("{};{};{}".format(today_as_str, "US", us_as_str))
         return stats
 
     @staticmethod
@@ -144,6 +149,33 @@ class Cov19Statistics:
             logger.error("Could not obtain statistics for United Kingdom")
         return stats
 
+    def get_data_united_states(self):
+        stats = []
+        response = requests.get(self.url_us)
+        soup = BeautifulSoup(response.text, "html.parser")
+        cases = None
+        deaths = None
+        for p in soup.find_all('li'):
+            m = re.search(r'Total cases:\s*([\d,]+)', str(p), re.I | re.M)
+            if m:
+                cases = m.group(1)
+                cases = int(cases.replace(",", ""))
+                stats.append(cases)
+                next
+
+            m = re.search(r'Total deaths:.+?(\d+)', str(p), re.I | re.M)
+            if m:
+                deaths = m.group(1)
+                deaths = int(deaths.replace(",", ""))
+                stats.append(deaths)
+
+            if cases and deaths:
+                break
+
+        if not stats:
+            logger.error("Could not obtain statistics for United States")
+        return stats
+
     def run(self):
         self.write_statistics_to_file()
 
@@ -151,9 +183,9 @@ class Cov19Statistics:
 if __name__ == "__main__":
     import argparse
 
-    version = "1.0.2"
-    parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection "
-                                                 "rate in Germany, Austria, Switzerland, United Kingdom")
+    version = "1.0.3"
+    parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection rate in "
+                                                 "Germany, Austria, Switzerland, United Kingdom, United States")
     parser.add_argument("--version", action='version', version=version)
     parser.add_argument("log_file", default="cov19_statistics.log", help="the file to log statistics into", type=str)
     args = parser.parse_args()
