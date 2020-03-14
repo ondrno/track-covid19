@@ -63,5 +63,5 @@ def test_get_data_uk_returns_values():
     with open("{}/res/uk_fallzahlen.xlsx".format(base_path), mode='rb') as f:
         body = f.read()
         responses.add(responses.GET, c.url_uk, body=body, status=200)
-        data = c.get_data_uk()
+        data = c.get_data_united_kingdom()
         assert data == [797, 10]
