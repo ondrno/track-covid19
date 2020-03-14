@@ -6,6 +6,7 @@ from cov19 import Cov19Statistics
 
 base_path = pathlib.Path(__file__).parent
 
+
 @pytest.mark.parametrize("data, exp_str", [([1, 2], "1;2"), ([], ""), (["a", "b"], "a;b")])
 def test_list2str_returns_empty_string_for_empty_list(data, exp_str):
     c = Cov19Statistics()
