@@ -71,23 +71,25 @@ class Cov19Statistics:
 
     def get_data_germany(self):
         stats = []
-        try:
-            tables = pd.read_html(self.url_de)
+        response = requests.get(self.url_de)
+        if response.status_code == 200:
+            try:
+                tables = pd.read_html(response.text)
+                title = tables[0].columns[1]
+                raw_cases = tables[0][title][16]
+                m = re.match(r'([\d\.]+)\s*\(([\d\.]+)\)', raw_cases)
+                if m:
+                    cases = self._str2int(m.group(1))
+                    deaths = self._str2int(m.group(2))
 
-            title = tables[0].columns[1]
-            raw_cases = tables[0][title][16]
-            m = re.match(r'([\d\.]+)\s*\(([\d\.]+)\)', raw_cases)
-            if m:
-                cases = self._str2int(m.group(1))
-                deaths = self._str2int(m.group(2))
-
-            stats.append(cases)
-            stats.append(deaths)
-        except ValueError:
-            pass
-
-        if not stats:
-            logger.error("Could not obtain statistics for Germany")
+                stats.append(cases)
+                stats.append(deaths)
+            except ValueError:
+                pass
+            if not stats:
+                logger.error("Could not find numbers in web page for Germany")
+        else:
+            logger.error("Could not access statistics for Germany (status code={})".format(response.status_code))
         return stats
 
     def get_data_austria(self):
@@ -183,7 +185,7 @@ class Cov19Statistics:
 if __name__ == "__main__":
     import argparse
 
-    version = "1.0.3"
+    version = "1.0.4"
     parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection rate in "
                                                  "Germany, Austria, Switzerland, United Kingdom, United States")
     parser.add_argument("--version", action='version', version=version)
