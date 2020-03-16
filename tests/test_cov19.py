@@ -14,18 +14,24 @@ def test_list2str_returns_empty_string_for_empty_list(data, exp_str):
     assert data_as_str == exp_str
 
 
+@responses.activate
 def test_get_data_germany_returns_values():
     c = Cov19Statistics()
-    c.url_de = "{}/res/de_fallzahlen.html".format(base_path)
-    data = c.get_data_germany()
-    assert data == [2369, 5]
+    with open("{}/res/de_fallzahlen.html".format(base_path)) as f:
+        body = f.read()
+        responses.add(responses.GET, c.url_de, body=body, status=200)
+        data = c.get_data_germany()
+        assert data == [2369, 5]
 
 
-def test_get_data_germany_emtpy_list():
+@responses.activate
+def test_get_data_germany_returns_empty_list():
     c = Cov19Statistics()
-    c.url_de = "{}/res/at_fallzahlen.html".format(base_path)
-    data = c.get_data_germany()
-    assert data == []
+    with open("{}/res/at_fallzahlen.html".format(base_path)) as f:
+        body = f.read()
+        responses.add(responses.GET, c.url_de, body=body, status=200)
+        data = c.get_data_germany()
+        assert data == []
 
 
 @responses.activate
