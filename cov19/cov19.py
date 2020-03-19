@@ -14,7 +14,7 @@ class Cov19Statistics:
         self.url_at = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
         self.url_ch = "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html"
         self.url_uk = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data"
-        self.url_us = "https://www.cdc.gov/coronavirus/2019-ncov/cases-in-us.html"
+        self.url_us = "https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fcoronavirus%2F2019-ncov%2Fcases-in-us.html"
         self.statistics = []
         self.do_run = False
 
@@ -75,12 +75,13 @@ class Cov19Statistics:
         if response.status_code == 200:
             try:
                 tables = pd.read_html(response.text)
-                title = tables[0].columns[1]
-                raw_cases = tables[0][title][16]
-                m = re.match(r'([\d\.]+)\s*\(([\d\.]+)\)', raw_cases)
-                if m:
-                    cases = self._str2int(m.group(1))
-                    deaths = self._str2int(m.group(2))
+                cases_title = tables[0].columns[1]
+                cases = tables[0][cases_title][16]
+                cases = self._str2int(cases)
+
+                deaths_title = tables[0].columns[4]
+                deaths = tables[0][deaths_title][16]
+                deaths = self._str2int(deaths)
 
                 stats.append(cases)
                 stats.append(deaths)
@@ -96,16 +97,24 @@ class Cov19Statistics:
         stats = []
         response = requests.get(self.url_at)
         soup = BeautifulSoup(response.text, "html.parser")
+        cases = deaths = recovered = None
         for p in soup.find_all('p'):
-            m = re.search(r'.*Bestätigte Fälle:\s*(\d+).+\s+Genesene Personen:\s*(\d+).+\s+Todesfälle:\s*(\d+).*', str(p),
-                          re.I | re.M)
+            m = re.search(r'Best.+tigte F.+lle:.+?([\d.]+)', str(p), re.I | re.M)
             if m:
-                cases = int(m.group(1))
-                recovered = int(m.group(2))
-                deaths = int(m.group(3))
+                cases = self._str2int(m.group(1))
                 stats.append(cases)
+
+            m = re.search(r'Todesf.+lle:.+?([\d.]+)', str(p), re.I | re.M)
+            if m:
+                deaths = self._str2int(m.group(1))
                 stats.append(deaths)
+
+            m = re.search(r'Genesene Personen:.+?([\d.]+)', str(p), re.I | re.M)
+            if m:
+                recovered = self._str2int(m.group(1))
                 stats.append(recovered)
+
+            if cases and deaths and recovered:
                 break
         if not stats:
             logger.error("Could not obtain statistics for Austria")
@@ -185,7 +194,7 @@ class Cov19Statistics:
 if __name__ == "__main__":
     import argparse
 
-    version = "1.0.4"
+    version = "1.0.5"
     parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection rate in "
                                                  "Germany, Austria, Switzerland, United Kingdom, United States")
     parser.add_argument("--version", action='version', version=version)

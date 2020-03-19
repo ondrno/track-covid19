@@ -21,7 +21,7 @@ def test_get_data_germany_returns_values():
         body = f.read()
         responses.add(responses.GET, c.url_de, body=body, status=200)
         data = c.get_data_germany()
-        assert data == [2369, 5]
+        assert data == [10999, 20]
 
 
 @responses.activate
@@ -41,7 +41,7 @@ def test_get_data_austria_returns_values():
         body = f.read()
         responses.add(responses.GET, c.url_at, body=body, status=200)
         data = c.get_data_austria()
-        assert data == [361, 1, 4]
+        assert data == [1843, 5, 9]
 
 
 @responses.activate
