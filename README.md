@@ -29,9 +29,9 @@ directory.
 The log file ``cov19_statistics.log`` can be found in the ``log`` directory.
     
 ## Log file format
-    year;month;day;hour;minute;country;cases;dead;recovered
-    2020;3;14;12;6;DE;3062;5
-    2020;3;14;12;6;AT;602;1;6
-    2020;3;14;12;6;CH;1359;11
-    2020;3;14;18;25;UK;797;10
-    2020;3;14;22;6;US;1629;41
+    ts;country;cases;deaths;recovered
+    2020-03-21T14:49:00;DE;16662;46
+    2020-03-21T14:49:00;AT;2664;7;9
+    2020-03-21T14:49:00;CH;6113;56
+    2020-03-21T14:49:00;UK;3983;177
+    2020-03-21T14:49:00;US;15219;201
