@@ -128,13 +128,13 @@ class Cov19Statistics:
         cases = None
         deaths = None
         for p in soup.find_all('p'):
-            m = re.search(r'Positiv getestet:\s*(\d+)\s+Personen', str(p), re.I | re.M)
+            m = re.search(r'positiv getesteter Erkrankungsf.+lle[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
                 cases = int(m.group(1))
                 stats.append(cases)
                 next
 
-            m = re.search(r'Verstorben.+?(\d+)\s+Personen', str(p), re.I | re.M)
+            m = re.search(r'Verstorben[\s\S]+?(\d+)\s*Personen', str(p), re.I | re.M)
             if m:
                 deaths = int(m.group(1))
                 stats.append(deaths)
@@ -195,7 +195,7 @@ class Cov19Statistics:
 if __name__ == "__main__":
     import argparse
 
-    version = "1.0.5"
+    version = "1.0.6"
     parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection rate in "
                                                  "Germany, Austria, Switzerland, United Kingdom, United States")
     parser.add_argument("--version", action='version', version=version)
