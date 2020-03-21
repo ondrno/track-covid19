@@ -42,27 +42,28 @@ class Cov19Statistics:
         today = datetime.now()
         today = datetime(today.year, today.month, today.day, today.hour, today.minute).isoformat()
 
+        stats = list()
+
         de_data = self.get_data_germany()
         de_as_str = self._list2str(de_data)
+        stats.append("{};{};{}".format(today, "DE", de_as_str))
 
         at_data = self.get_data_austria()
         at_as_str = self._list2str(at_data)
+        stats.append("{};{};{}".format(today, "AT", at_as_str))
 
         ch_data = self.get_data_switzerland()
         ch_as_str = self._list2str(ch_data)
+        stats.append("{};{};{}".format(today, "CH", ch_as_str))
 
         uk_data = self.get_data_united_kingdom()
         uk_as_str = self._list2str(uk_data)
+        stats.append("{};{};{}".format(today, "UK", uk_as_str))
 
         us_data = self.get_data_united_states()
         us_as_str = self._list2str(us_data)
-
-        stats = list()
-        stats.append("{};{};{}".format(today, "DE", de_as_str))
-        stats.append("{};{};{}".format(today, "AT", at_as_str))
-        stats.append("{};{};{}".format(today, "CH", ch_as_str))
-        stats.append("{};{};{}".format(today, "UK", uk_as_str))
         stats.append("{};{};{}".format(today, "US", us_as_str))
+
         return stats
 
     @staticmethod
