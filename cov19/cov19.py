@@ -40,7 +40,7 @@ class Cov19Statistics:
 
     def get_todays_statistics(self) -> str:
         today = datetime.now()
-        today_as_str = self._list2str([today.year, today.month, today.day, today.hour, today.minute])
+        today = datetime(today.year, today.month, today.day, today.hour, today.minute).isoformat()
 
         de_data = self.get_data_germany()
         de_as_str = self._list2str(de_data)
@@ -58,16 +58,16 @@ class Cov19Statistics:
         us_as_str = self._list2str(us_data)
 
         stats = list()
-        stats.append("{};{};{}".format(today_as_str, "DE", de_as_str))
-        stats.append("{};{};{}".format(today_as_str, "AT", at_as_str))
-        stats.append("{};{};{}".format(today_as_str, "CH", ch_as_str))
-        stats.append("{};{};{}".format(today_as_str, "UK", uk_as_str))
-        stats.append("{};{};{}".format(today_as_str, "US", us_as_str))
+        stats.append("{};{};{}".format(today, "DE", de_as_str))
+        stats.append("{};{};{}".format(today, "AT", at_as_str))
+        stats.append("{};{};{}".format(today, "CH", ch_as_str))
+        stats.append("{};{};{}".format(today, "UK", uk_as_str))
+        stats.append("{};{};{}".format(today, "US", us_as_str))
         return stats
 
     @staticmethod
     def get_header_info():
-        return "year;month;day;hour;minute;country;cases;deaths;recovered"
+        return "ts;country;cases;deaths;recovered"
 
     def get_data_germany(self):
         stats = []
@@ -133,7 +133,7 @@ class Cov19Statistics:
                 stats.append(cases)
                 next
 
-            m = re.search(r'Verstorben:.+?(\d+)\s+Personen', str(p), re.I | re.M)
+            m = re.search(r'Verstorben.+?(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
                 deaths = int(m.group(1))
                 stats.append(deaths)
