@@ -5,11 +5,15 @@ import requests
 import re
 import pathlib
 from bs4 import BeautifulSoup
+import cov19
+from loguru import logger
 
 
 class Cov19Statistics:
-    def __init__(self, log_file: str = "cov19_statistics.log"):
-        self.log_file = pathlib.Path(log_file)
+    def __init__(self, log_file: str = "log/cov19_statistics.log"):
+        self.base_path = pathlib.Path(__file__).parent.parent
+        self.log_file = self.base_path.joinpath(log_file)
+        logger.info("base_path={} log_file={}", self.base_path, self.log_file)
         self.url_de = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
         self.url_at = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
         self.url_ch = "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html"
@@ -42,46 +46,52 @@ class Cov19Statistics:
         today = datetime.now()
         today = datetime(today.year, today.month, today.day, today.hour, today.minute).isoformat()
 
+        stats = list()
+
         de_data = self.get_data_germany()
         de_as_str = self._list2str(de_data)
+        stats.append("{};{};{}".format(today, "DE", de_as_str))
 
         at_data = self.get_data_austria()
         at_as_str = self._list2str(at_data)
+        stats.append("{};{};{}".format(today, "AT", at_as_str))
 
         ch_data = self.get_data_switzerland()
         ch_as_str = self._list2str(ch_data)
+        stats.append("{};{};{}".format(today, "CH", ch_as_str))
 
         uk_data = self.get_data_united_kingdom()
         uk_as_str = self._list2str(uk_data)
+        stats.append("{};{};{}".format(today, "UK", uk_as_str))
 
         us_data = self.get_data_united_states()
         us_as_str = self._list2str(us_data)
-
-        stats = list()
-        stats.append("{};{};{}".format(today, "DE", de_as_str))
-        stats.append("{};{};{}".format(today, "AT", at_as_str))
-        stats.append("{};{};{}".format(today, "CH", ch_as_str))
-        stats.append("{};{};{}".format(today, "UK", uk_as_str))
         stats.append("{};{};{}".format(today, "US", us_as_str))
+
         return stats
 
     @staticmethod
     def get_header_info():
-        return "ts;country;cases;deaths;recovered"
+        return "dt;country;cases;deaths;recovered"
 
     def get_data_germany(self):
         stats = []
-        response = requests.get(self.url_de)
+        try:
+            response = requests.get(self.url_de)
+        except (requests.exceptions.HTTPError,
+                requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout):
+            raise cov19.exceptions.RequestError(self.url_de)
         if response.status_code == 200:
             try:
-                tables = pd.read_html(response.text)
+                tables = pd.read_html(response.text, thousands=".", decimal=";")
                 cases_title = tables[0].columns[1]
                 cases = tables[0][cases_title][16]
-                cases = self._str2int(cases)
+                cases = int(cases)
 
                 deaths_title = tables[0].columns[4]
                 deaths = tables[0][deaths_title][16]
-                deaths = self._str2int(deaths)
+                deaths = int(deaths)
 
                 stats.append(cases)
                 stats.append(deaths)
@@ -127,7 +137,7 @@ class Cov19Statistics:
         cases = None
         deaths = None
         for p in soup.find_all('p'):
-            m = re.search(r'positiv getesteter Erkrankungsf.+lle[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
+            m = re.search(r'positiv getestete Erkrankungsf.+lle[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
                 cases = int(m.group(1))
                 stats.append(cases)
