@@ -2,11 +2,11 @@ version: "3.5"
 
 services:
   cov19stat:
-    build:
-      dockerfile: Dockerfile
-      context: .
+    build: .
     image: ondrno/cov19stats
     container_name: cov19stats
+    ports:
+    - 8050:8050
     restart: always
     volumes:
       - ./log:/app/log

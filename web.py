@@ -24,8 +24,6 @@ app.config.suppress_callback_exceptions = True
 CACHE_CONFIG = {
     'CACHE_TYPE': 'filesystem',
     'CACHE_DIR': os.environ.get('CACHE_DIR', 'cache-directory')
-    # 'CACHE_TYPE': 'redis',
-    # 'CACHE_REDIS_URL': os.environ.get('REDIS_URL', 'redis://redis:6379')
 }
 cache = Cache()
 cache.init_app(server, config=CACHE_CONFIG)
@@ -33,7 +31,6 @@ cache.init_app(server, config=CACHE_CONFIG)
 
 @app.callback(Output('signal', 'children'), [Input('interval-component', 'n_intervals')])
 def collect_data(n):
-    logger.info("collect data()")
     # get data from web sites and send a signal when done
     global_store()
 
@@ -44,7 +41,6 @@ def global_store():
     # these computations are cached in a globally available
     # redis memory store which is available across processes
     # and for all time.
-    logger.info("global_store()")
     # do the real job, i.e. 1) get data from web site, 2) store it into a file and 3) then read the data into data frame
     c = Cov19Statistics()
     c.write_statistics_to_file()
@@ -58,7 +54,6 @@ def global_store():
 
 
 def serve_layout():
-    logger.info("Update cycle={} minutes", get_query_interval() / 1000 / 60)
     return html.Div(children=[
         # hidden signal value
         html.Div(id='signal', style={'display': 'none'}),
@@ -94,8 +89,7 @@ def serve_layout():
     ])
 
 
-def read_data_as_groups(logfile: str = "log/cov19_statistics.log"):
-    logger.info("read_data_as_groups()")
+def read_data_as_groups(logfile):
     df = pd.read_csv(logfile, sep=";")
     df.drop_duplicates(keep='last', subset=['country', 'cases', 'deaths', 'recovered'], inplace=True)
     groups = df.groupby('country')
@@ -104,7 +98,6 @@ def read_data_as_groups(logfile: str = "log/cov19_statistics.log"):
 
 @app.callback(Output('last-updated', 'children'), [Input('signal', 'children')])
 def update_metrics_text(n):
-    logger.info("update_metrics_text()")
     today = datetime.now().isoformat()
     style = {'fontSize': '11px'}
     return [
@@ -114,7 +107,6 @@ def update_metrics_text(n):
 
 @app.callback(Output('covid-cases-graph', 'figure'), [Input('signal', 'children')])
 def update_covid_cases_metrics(n):
-    logger.info("update_covid_cases_metrics()")
     de, at, ch, uk, us = global_store()
     fig = {
         'data': [
@@ -133,7 +125,6 @@ def update_covid_cases_metrics(n):
 
 @app.callback(Output('covid-deaths-graph', 'figure'), [Input('signal', 'children')])
 def update_covid_deaths_metrics(n):
-    logger.info("update_covid_deaths_metrics()")
     de, at, ch, uk, us = global_store()
     fig = {
         'data': [
@@ -154,4 +145,5 @@ app.layout = serve_layout
 
 
 if __name__ == '__main__':
-    app.run_server(port=os.environ.get('PORT', 8051))
+    logger.info("Update cycle={} minutes", get_query_interval() / 1000 / 60)
+    app.run_server(port=os.environ.get('PORT', 8050))
