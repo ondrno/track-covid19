@@ -58,6 +58,7 @@ def global_store():
 
 
 def serve_layout():
+    logger.info("Update cycle={} minutes", get_query_interval() / 1000 / 60)
     return html.Div(children=[
         # hidden signal value
         html.Div(id='signal', style={'display': 'none'}),
@@ -153,4 +154,4 @@ app.layout = serve_layout
 
 
 if __name__ == '__main__':
-    app.run_server(port=os.environ.get('PORT', 8050))
+    app.run_server(port=os.environ.get('PORT', 8051))

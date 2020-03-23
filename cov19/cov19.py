@@ -137,7 +137,7 @@ class Cov19Statistics:
         cases = None
         deaths = None
         for p in soup.find_all('p'):
-            m = re.search(r'positiv getesteter Erkrankungsf.+lle[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
+            m = re.search(r'positiv getestete Erkrankungsf.+lle[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
                 cases = int(m.group(1))
                 stats.append(cases)

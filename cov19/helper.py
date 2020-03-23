@@ -10,7 +10,8 @@ def _interval_to_ms(value: int, unit: str) -> int:
 
     min_interval = 30 * one_minute_in_ms
     max_interval = 24 * one_hour_in_ms
-    default_interval = 12 * one_hour_in_ms
+    # default_interval = 12 * one_hour_in_ms
+    default_interval = 2 * one_hour_in_ms
     if unit == 'h':
         interval = value * one_hour_in_ms
     elif unit == 'm':
