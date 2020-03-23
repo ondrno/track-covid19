@@ -1,16 +1,22 @@
 import pytest
 import mock
 from cov19 import get_query_interval
+from cov19.helper import _interval_to_ms
+
+
+def test_interval_to_ms_raises_exception():
+    with pytest.raises(ValueError):
+        _interval_to_ms(10, 'z')
 
 
 @pytest.mark.parametrize("value", ["29m", "25h", None])
 @mock.patch('os.environ.get')
 def test_query_interval_casts_valid_units_to_default(mock_get, value):
     mock_get.return_value = value
-    twelve_hours_in_ms = 12 * 60 * 60 * 1000
+    four_hours_in_ms = 4 * 60 * 60 * 1000
 
     interval = get_query_interval()
-    assert twelve_hours_in_ms == interval
+    assert four_hours_in_ms == interval
 
 
 @pytest.mark.parametrize("value, exp_ms", [("30m", 1800000), ("24h", 86400000)])

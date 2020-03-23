@@ -4,14 +4,13 @@ import re
 
 def _interval_to_ms(value: int, unit: str) -> int:
     """Convert the value and unit into milliseconds, if the value is not within the
-    valid range (30 min to 24 hours) then the default is used."""
+    valid range (30 min to 24 hours) then the default (4 hours) is used."""
     one_minute_in_ms = 60 * 1000
     one_hour_in_ms = 60 * one_minute_in_ms
 
     min_interval = 30 * one_minute_in_ms
     max_interval = 24 * one_hour_in_ms
-    # default_interval = 12 * one_hour_in_ms
-    default_interval = 2 * one_hour_in_ms
+    default_interval = 4 * one_hour_in_ms
     if unit == 'h':
         interval = value * one_hour_in_ms
     elif unit == 'm':

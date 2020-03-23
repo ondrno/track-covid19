@@ -21,7 +21,7 @@ def test_get_data_germany_returns_values():
         body = f.read()
         responses.add(responses.GET, c.url_de, body=body, status=200)
         data = c.get_data_germany()
-        assert data == [10999, 20]
+        assert data == [18610, 55]
 
 
 @responses.activate
@@ -61,7 +61,7 @@ def test_get_data_switzerland_returns_values():
         body = f.read()
         responses.add(responses.GET, c.url_ch, body=body, status=200)
         data = c.get_data_switzerland()
-        assert data == [6113, 56]
+        assert data == [8060, 66]
 
 
 def test_get_data_uk_returns_values():
@@ -79,3 +79,7 @@ def test_get_data_us_returns_values():
         responses.add(responses.GET, c.url_us, body=body, status=200)
         data = c.get_data_united_states()
         assert data == [1629, 41]
+
+
+def test_get_header_info_returns_string():
+    assert "dt;country;cases;deaths;recovered" == Cov19Statistics.get_header_info()
