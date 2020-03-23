@@ -1,3 +1,4 @@
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -5,20 +6,65 @@ from dash.dependencies import Input, Output
 import flask
 import pandas as pd
 from datetime import datetime
+from flask_caching import Cache
+from loguru import logger
+from cov19 import Cov19Statistics, get_query_interval
 
+
+external_stylesheets = [
+    # Dash CSS
+    'https://codepen.io/chriddyp/pen/bWLwgP.css',
+    # Loading screen CSS
+    'https://codepen.io/chriddyp/pen/brPBPO.css']
 
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server)
+app = dash.Dash(__name__, server=server, external_stylesheets=external_stylesheets)
 app.config.suppress_callback_exceptions = True
+
+CACHE_CONFIG = {
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': os.environ.get('CACHE_DIR', 'cache-directory')
+    # 'CACHE_TYPE': 'redis',
+    # 'CACHE_REDIS_URL': os.environ.get('REDIS_URL', 'redis://redis:6379')
+}
+cache = Cache()
+cache.init_app(server, config=CACHE_CONFIG)
+
+
+@app.callback(Output('signal', 'children'), [Input('interval-component', 'n_intervals')])
+def collect_data(n):
+    logger.info("collect data()")
+    # get data from web sites and send a signal when done
+    global_store()
+
+
+@cache.memoize(timeout=os.environ.get('CACHE_TIMEOUT', 120))
+def global_store():
+    # perform expensive computations in this "global store"
+    # these computations are cached in a globally available
+    # redis memory store which is available across processes
+    # and for all time.
+    logger.info("global_store()")
+    # do the real job, i.e. 1) get data from web site, 2) store it into a file and 3) then read the data into data frame
+    c = Cov19Statistics()
+    c.write_statistics_to_file()
+    groups = read_data_as_groups(c.log_file)
+    de = groups.get_group('DE')
+    at = groups.get_group('AT')
+    ch = groups.get_group('CH')
+    uk = groups.get_group('UK')
+    us = groups.get_group('US')
+    return de, at, ch, uk, us
 
 
 def serve_layout():
-    # two_hours_in_ms = 2 * 3600 * 1000
-    two_hours_in_ms = 60 * 1000
     return html.Div(children=[
+        # hidden signal value
+        html.Div(id='signal', style={'display': 'none'}),
+
         dcc.Interval(
             id='interval-component',
-            interval=two_hours_in_ms,
+            interval=get_query_interval(),
             n_intervals=0
         ),
         html.H1(children='Covid-19 Statistics (D, A, CH, UK, US)'),
@@ -47,21 +93,17 @@ def serve_layout():
     ])
 
 
-def read_data(logfile: str = "../log/cov19_statistics.log"):
+def read_data_as_groups(logfile: str = "log/cov19_statistics.log"):
+    logger.info("read_data_as_groups()")
     df = pd.read_csv(logfile, sep=";")
     df.drop_duplicates(keep='last', subset=['country', 'cases', 'deaths', 'recovered'], inplace=True)
-    grouped = df.groupby('country')
-    de = grouped.get_group('DE')
-    at = grouped.get_group('AT')
-    ch = grouped.get_group('CH')
-    uk = grouped.get_group('UK')
-    us = grouped.get_group('US')
-    return de, at, ch, uk, us
+    groups = df.groupby('country')
+    return groups
 
 
-@app.callback(Output('last-updated', 'children'),
-              [Input('interval-component', 'n_intervals')])
+@app.callback(Output('last-updated', 'children'), [Input('signal', 'children')])
 def update_metrics_text(n):
+    logger.info("update_metrics_text()")
     today = datetime.now().isoformat()
     style = {'fontSize': '11px'}
     return [
@@ -69,11 +111,11 @@ def update_metrics_text(n):
     ]
 
 
-@app.callback(Output('covid-cases-graph', 'figure'),
-              [Input('interval-component', 'n_intervals')])
+@app.callback(Output('covid-cases-graph', 'figure'), [Input('signal', 'children')])
 def update_covid_cases_metrics(n):
-    de, at, ch, uk, us = read_data()
-    fig={
+    logger.info("update_covid_cases_metrics()")
+    de, at, ch, uk, us = global_store()
+    fig = {
         'data': [
             {'x': at["dt"], 'y': at["cases"], 'name': "Austria"},
             {'x': de["dt"], 'y': de["cases"], 'name': "Germany"},
@@ -88,10 +130,10 @@ def update_covid_cases_metrics(n):
     return fig
 
 
-@app.callback(Output('covid-deaths-graph', 'figure'),
-              [Input('interval-component', 'n_intervals')])
-def update_covid_cases_metrics(n):
-    de, at, ch, uk, us = read_data()
+@app.callback(Output('covid-deaths-graph', 'figure'), [Input('signal', 'children')])
+def update_covid_deaths_metrics(n):
+    logger.info("update_covid_deaths_metrics()")
+    de, at, ch, uk, us = global_store()
     fig = {
         'data': [
             {'x': at["dt"], 'y': at["deaths"], 'name': "Austria"},
@@ -106,9 +148,9 @@ def update_covid_cases_metrics(n):
     }
     return fig
 
+
 app.layout = serve_layout
 
 
 if __name__ == '__main__':
-    # df = read_data()
-    app.run_server(port=8050)
+    app.run_server(port=os.environ.get('PORT', 8050))
