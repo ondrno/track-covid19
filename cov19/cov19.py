@@ -137,13 +137,17 @@ class Cov19Statistics:
         cases = None
         deaths = None
         for p in soup.find_all('p'):
-            m = re.search(r'positiv getestete Erkrankungsf.+lle[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
+            # the international figures are usually below the swiss figures, thus stop the scanning
+            if re.search(r'Ansteckungen mit dem neuen Coronavirus in.+L.+nder oder Regionen', str(p), re.I | re.M):
+                break
+
+            m = re.search(r'Erkrankungen:[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
             if m:
                 cases = int(m.group(1))
                 stats.append(cases)
                 next
 
-            m = re.search(r'Verstorben[\s\S]+?(\d+)\s*Personen', str(p), re.I | re.M)
+            m = re.search(r'Verstorben:[\s\S]+?(\d+)\s*Personen', str(p), re.I | re.M)
             if m:
                 deaths = int(m.group(1))
                 stats.append(deaths)
