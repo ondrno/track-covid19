@@ -61,7 +61,7 @@ def test_get_data_switzerland_returns_values():
         body = f.read()
         responses.add(responses.GET, c.url_ch, body=body, status=200)
         data = c.get_data_switzerland()
-        assert data == [8060, 66]
+        assert data == [10714, 161]
 
 
 def test_get_data_uk_returns_values():

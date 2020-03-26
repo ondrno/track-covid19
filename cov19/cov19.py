@@ -141,15 +141,17 @@ class Cov19Statistics:
             if re.search(r'Ansteckungen mit dem neuen Coronavirus in.+L.+nder oder Regionen', str(p), re.I | re.M):
                 break
 
-            m = re.search(r'Erkrankungen:[\s\S]+?(\d+)\s+Personen', str(p), re.I | re.M)
+            m = re.search(r'positiv getestet:[\s\S]+?([\d\s]+)\s+Personen', str(p), re.I | re.M)
             if m:
-                cases = int(m.group(1))
+                cases_raw = re.sub(r'\D', '', m.group(1))
+                cases = int(cases_raw)
                 stats.append(cases)
                 next
 
-            m = re.search(r'Verstorben:[\s\S]+?(\d+)\s*Personen', str(p), re.I | re.M)
+            m = re.search(r'Verstorben:[\s\S]+?([\d\s]+)\s*Personen', str(p), re.I | re.M)
             if m:
-                deaths = int(m.group(1))
+                deaths_raw = re.sub(r'\D', '', m.group(1))
+                deaths = int(deaths_raw)
                 stats.append(deaths)
 
             if cases and deaths:
@@ -208,7 +210,7 @@ class Cov19Statistics:
 if __name__ == "__main__":
     import argparse
 
-    version = "1.0.6"
+    version = "1.0.7"
     parser = argparse.ArgumentParser(description="Program which tracks the SARS-Cov-2 infection rate in "
                                                  "Germany, Austria, Switzerland, United Kingdom, United States")
     parser.add_argument("--version", action='version', version=version)
