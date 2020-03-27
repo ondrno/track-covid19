@@ -186,7 +186,7 @@ class Cov19Statistics:
                 stats.append(cases)
                 next
 
-            m = re.search(r'Total deaths:.+?(\d+)', str(p), re.I | re.M)
+            m = re.search(r'Total deaths:.+?([\d,]+)', str(p), re.I | re.M)
             if m:
                 deaths = m.group(1)
                 deaths = int(deaths.replace(",", ""))

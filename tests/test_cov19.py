@@ -78,7 +78,7 @@ def test_get_data_us_returns_values():
         body = f.read()
         responses.add(responses.GET, c.url_us, body=body, status=200)
         data = c.get_data_united_states()
-        assert data == [1629, 41]
+        assert data == [85356, 1246]
 
 
 def test_get_header_info_returns_string():
