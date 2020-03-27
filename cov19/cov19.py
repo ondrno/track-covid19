@@ -109,22 +109,18 @@ class Cov19Statistics:
         soup = BeautifulSoup(response.text, "html.parser")
         cases = deaths = recovered = None
         for p in soup.find_all('p'):
-            m = re.search(r'Best.+tigte F.+lle:.+?([\d.]+)', str(p), re.I | re.M)
+            m = re.search(r'Best.+tigte F.+lle.+Uhr:.*?([\d.]+) F.+lle', str(p), re.I | re.M)
             if m:
                 cases = self._str2int(m.group(1))
                 stats.append(cases)
+                next
 
-            m = re.search(r'Todesf.+lle:.+?([\d.]+)', str(p), re.I | re.M)
+            m = re.search(r'Todesf.+lle.+Uhr:.*?([\d.]+)', str(p), re.I | re.M)
             if m:
                 deaths = self._str2int(m.group(1))
                 stats.append(deaths)
 
-            m = re.search(r'Genesene Personen:.+?([\d.]+)', str(p), re.I | re.M)
-            if m:
-                recovered = self._str2int(m.group(1))
-                stats.append(recovered)
-
-            if cases and deaths and recovered:
+            if cases and deaths:
                 break
         if not stats:
             logger.error("Could not obtain statistics for Austria")
