@@ -1,10 +1,6 @@
-import json
-import pandas as pd
 import requests
 import re
 from bs4 import BeautifulSoup
-from loguru import logger
-from collections import OrderedDict
 from cov19 import DataCollector
 
 
