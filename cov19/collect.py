@@ -182,7 +182,7 @@ class UnitedKingdom(DataCollector):
 class UnitedStates(DataCollector):
     def __init__(self):
         super().__init__("United States")
-        self.url = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data"
+        self.url = "https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fcoronavirus%2F2019-ncov%2Fcases-in-us.html"
 
     def get_cov19_data(self):
         response = requests.get(self.url)
