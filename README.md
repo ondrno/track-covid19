@@ -28,10 +28,29 @@ which shows the statistics found in the log file. The log file is continuously u
     
 The log file ``cov19_statistics.log`` can be found in the ``log`` directory.
     
-## Log file format
-    ts;country;cases;deaths;recovered
-    2020-03-21T14:49:00;DE;16662;46
-    2020-03-21T14:49:00;AT;2664;7;9
-    2020-03-21T14:49:00;CH;6113;56
-    2020-03-21T14:49:00;UK;3983;177
-    2020-03-21T14:49:00;US;15219;201
+## Log file 
+The log file is from version v2.0.0 onwards in json format. For every country it contains 
+the number of cases ("c") and the number of deaths ("d") at a certain time ("date").
+
+Further, it may contain further information about the number of cases and death of certain 
+provinces of that country.  
+
+Example:
+
+    {"country": "DE", "c": 48582, "d": 325, "date": "2020-03-28T19:27:00"}
+    {"country": "AT", "provinces": {"BL": {"c": 142, "d": 2}, "K": {"c": 221, "d": 2}, "NO": {"c": 1332, "d": 4}, "OO": {"c": 1332, "d": 4}, "SB": {"c": 751, "d": 4}, "ST": {"c": 828, "d": 17}, "T": {"c": 1846, "d": 9}, "V": {"c": 549, "d": 1}, "W": {"c": 1046, "d": 16}}, "c": 7995, "d": 68, "date": "2020-03-28T19:27:00"}
+    {"country": "CH", "c": 13213, "d": 235, "date": "2020-03-28T19:27:00"}
+    {"country": "UK", "c": 17089, "d": 1019, "date": "2020-03-28T19:27:00"}
+    {"country": "US", "c": 85356, "d": 1246, "date": "2020-03-28T19:27:00"}
+
+### Austria
+For Austria the total numbers and the ones from the provinces are tracked.
+- BL - Burgenland
+- K - Carinthia / Kaernten
+- NO - Lower Austria / Niederoesterreich
+- OO - Upper Austria / Oberoesterreich
+- SB - Salzburg
+- ST - Styria / Steiermark
+- T - Tyrol / Tirol
+- V - Vorarlberg
+- W - Vienna / Wien
