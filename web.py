@@ -1,4 +1,5 @@
 import os
+import json
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -8,7 +9,7 @@ import pandas as pd
 from datetime import datetime
 from flask_caching import Cache
 from loguru import logger
-from cov19 import Cov19Statistics, get_query_interval
+from cov19 import Cov19Statistics, get_query_interval, Austria, Germany, Switzerland, UnitedKingdom, UnitedStates
 
 
 external_stylesheets = [
@@ -42,9 +43,13 @@ def global_store():
     # redis memory store which is available across processes
     # and for all time.
     # do the real job, i.e. 1) get data from web site, 2) store it into a file and 3) then read the data into data frame
-    c = Cov19Statistics()
-    c.write_statistics_to_file()
-    groups = read_data_as_groups(c.log_file)
+    cov19 = Cov19Statistics()
+    for country in [Germany, Austria, Switzerland, UnitedKingdom, UnitedStates]:
+        c = country()
+        cov19.add_country(c)
+
+    cov19.write_statistics_to_file()
+    groups = read_data_as_groups(cov19.log_file)
     de = groups.get_group('DE')
     at = groups.get_group('AT')
     ch = groups.get_group('CH')
@@ -90,8 +95,12 @@ def serve_layout():
 
 
 def read_data_as_groups(logfile):
-    df = pd.read_csv(logfile, sep=";")
-    df.drop_duplicates(keep='last', subset=['country', 'cases', 'deaths', 'recovered'], inplace=True)
+    with open(logfile) as f:
+        data = []
+        for line in f.readlines():
+            data.append(json.loads(line))
+        df = pd.json_normalize(data)
+    df.drop_duplicates(keep='last', subset=['country', 'c', 'd'], inplace=True)
     groups = df.groupby('country')
     return groups
 
@@ -110,11 +119,11 @@ def update_covid_cases_metrics(n):
     de, at, ch, uk, us = global_store()
     fig = {
         'data': [
-            {'x': at["dt"], 'y': at["cases"], 'name': "Austria"},
-            {'x': de["dt"], 'y': de["cases"], 'name': "Germany"},
-            {'x': ch["dt"], 'y': ch["cases"], 'name': "Switzerland"},
-            {'x': uk["dt"], 'y': uk["cases"], 'name': "United Kingdom"},
-            {'x': us["dt"], 'y': us["cases"], 'name': "United States"},
+            {'x': at["date"], 'y': at["c"], 'name': "Austria"},
+            {'x': de["date"], 'y': de["c"], 'name': "Germany"},
+            {'x': ch["date"], 'y': ch["c"], 'name': "Switzerland"},
+            {'x': uk["date"], 'y': uk["c"], 'name': "United Kingdom"},
+            {'x': us["date"], 'y': us["c"], 'name': "United States"},
         ],
         'layout': {
             'title': 'Confirmed cases'
@@ -128,11 +137,11 @@ def update_covid_deaths_metrics(n):
     de, at, ch, uk, us = global_store()
     fig = {
         'data': [
-            {'x': at["dt"], 'y': at["deaths"], 'name': "Austria"},
-            {'x': de["dt"], 'y': de["deaths"], 'name': "Germany"},
-            {'x': ch["dt"], 'y': ch["deaths"], 'name': "Switzerland"},
-            {'x': uk["dt"], 'y': uk["deaths"], 'name': "United Kingdom"},
-            {'x': us["dt"], 'y': us["deaths"], 'name': "United States"},
+            {'x': at["date"], 'y': at["d"], 'name': "Austria"},
+            {'x': de["date"], 'y': de["d"], 'name': "Germany"},
+            {'x': ch["date"], 'y': ch["d"], 'name': "Switzerland"},
+            {'x': uk["date"], 'y': uk["d"], 'name': "United Kingdom"},
+            {'x': us["date"], 'y': us["d"], 'name': "United States"},
         ],
         'layout': {
             'title': 'Confirmed deaths'

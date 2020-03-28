@@ -9,16 +9,18 @@ base_path = pathlib.Path(__file__).parent
 
 @responses.activate
 def test_get_data_returns_values():
-    expected = {"country": "AT", "c": 7399,
-                "BL": {"c": 138, "d": 2},
-                "K": {"c": 202, "d": 2},
-                "NO": {"c": 1217, "d": 4},
-                "OO": {"c": 1217, "d": 4},
-                "SB": {"c": 687, "d": 1},
-                "ST": {"c": 759, "d": 13},
-                "T": {"c": 1752, "d": 6},
-                "V": {"c": 501, "d": 1},
-                "W": {"c": 1003, "d": 16}, "d": 58}
+    expected = {"country": "AT",
+                "provinces": {
+                    "BL": {"c": 138, "d": 2},
+                    "K": {"c": 202, "d": 2},
+                    "NO": {"c": 1217, "d": 4},
+                    "OO": {"c": 1217, "d": 4},
+                    "SB": {"c": 687, "d": 1},
+                    "ST": {"c": 759, "d": 13},
+                    "T": {"c": 1752, "d": 6},
+                    "V": {"c": 501, "d": 1},
+                    "W": {"c": 1003, "d": 16}
+                }, "c": 7399, "d": 58}
     at = Austria()
     with open("{}/res/at_fallzahlen.html".format(base_path)) as f:
         body = f.read()

@@ -21,12 +21,9 @@ class Cov19Statistics:
             self.countries.remove(country)
 
     def write_statistics_to_file(self) -> None:
-        header = ''
         self.get_todays_statistics()
 
         with open(self.log_file, 'a') as f:
-            if header:
-                f.write(header + "\n")
             for stat in self.statistics:
                 f.write(stat + "\n")
 
@@ -35,10 +32,10 @@ class Cov19Statistics:
         today = datetime(today.year, today.month, today.day, today.hour, today.minute).isoformat()
 
         for country in self.countries:
-            data = country.get_cov19_data()
-            data['ts'] = today
-            self.statistics.append(json.dumps(data))
-            logger.info(json.dumps(data))
+            country.get_cov19_data()
+            country.data['date'] = today
+            self.statistics.append(country.get_data_as_json())
+            logger.info(country.get_data_as_json())
 
     def run(self):
         self.write_statistics_to_file()

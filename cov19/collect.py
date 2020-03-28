@@ -83,7 +83,7 @@ class Germany(DataCollector):
 
 
 class Austria(DataCollector):
-    county_pattern = {
+    provinces_pattern = {
         'BL': r'Burgenland',
         'K': r'K.+rnten',
         'NO': 'Nieder.+reich',
@@ -102,29 +102,30 @@ class Austria(DataCollector):
     def get_cov19_data(self):
         response = requests.get(self.url)
         soup = BeautifulSoup(response.text, "html.parser")
+        self.data['provinces'] = OrderedDict()
         for p in soup.find_all('p'):
             m = re.search(r'Best.+tigte F.+lle.+Uhr:.*?([\d.]+) F.+lle', str(p), re.I | re.M)
             if m:
                 total_cases = self._str2int(m.group(1))
                 self.data['c'] = total_cases
 
-            for county, pattern in Austria.county_pattern.items():
+            for province, pattern in Austria.provinces_pattern.items():
                 m = re.search(r'Best.+tigte F.+lle.+Bundesl.+ndern:.+?' + pattern + r'.+?(([\d.]+))', str(p), re.I | re.M)
                 if m:
                     cases = self._str2int(m.group(1))
-                    self.data[county] = OrderedDict()
-                    self.data[county]['c'] = cases
+                    self.data['provinces'][province] = OrderedDict()
+                    self.data['provinces'][province]['c'] = cases
 
             m = re.search(r'Todesf.+lle.+Uhr:.*?([\d.]+)', str(p), re.I | re.M)
             if m:
                 deaths = self._str2int(m.group(1))
                 self.data['d'] = deaths
 
-            for county, pattern in Austria.county_pattern.items():
+            for province, pattern in Austria.provinces_pattern.items():
                 m = re.search(r'Todesf.+lle.+Bundesl.+ndern:.+?' + pattern + r'.+?(([\d.]+))', str(p), re.I | re.M)
                 if m:
                     deaths = self._str2int(m.group(1))
-                    self.data[county]['d'] = deaths
+                    self.data['provinces'][province]['d'] = deaths
 
         self.check_data()
         return self.get_data_as_json()
