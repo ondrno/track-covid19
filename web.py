@@ -9,7 +9,8 @@ import pandas as pd
 from datetime import datetime
 from flask_caching import Cache
 from loguru import logger
-from cov19 import Cov19Statistics, get_query_interval, Austria, Germany, Switzerland, UnitedKingdom, UnitedStates
+from cov19 import Cov19Statistics, get_query_interval
+from cov19.collect import Austria, Germany, Switzerland, UnitedKingdom, UnitedStates
 
 
 external_stylesheets = [
