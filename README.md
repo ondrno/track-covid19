@@ -20,7 +20,7 @@ people recovered (Austria only), and deaths twice a day.
 The aim of the program is to have a timeline how the SARS-CoV-2 virus spread in these countries.
   
 ## How to use
-I have prepared a docker image for the ease of use. It provides a web application on port '8050' 
+I have prepared a docker image for the ease of use. It provides a python/dash web application on port '8050' 
 which shows the statistics found in the log file. The log file is continuously updated every 4 hours.
 
     docker-compose build

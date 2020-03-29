@@ -2,8 +2,10 @@ version: "3.5"
 
 services:
   cov19stat:
-    build: .
-    image: ondrno/cov19stats
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: ondrno/cov19stats:${COV19_VERSION:-latest}
     container_name: cov19stats
     ports:
     - 8050:8050
