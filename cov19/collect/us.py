@@ -1,7 +1,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-from cov19 import DataCollector
+from cov19.collect import DataCollector
 
 
 class UnitedStates(DataCollector):

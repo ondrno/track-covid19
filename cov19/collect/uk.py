@@ -1,5 +1,5 @@
 import pandas as pd
-from cov19 import DataCollector
+from cov19.collect import DataCollector
 
 
 class UnitedKingdom(DataCollector):

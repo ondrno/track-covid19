@@ -34,15 +34,15 @@ class DataCollector:
         if 'c' in self.data and 'd' in self.data:
             return True
         else:
-            logger.error("Could not find numbers in web page for {}".format(self.country))
+            logger.error("Could not find cases/deaths numbers in web page for {}".format(self.country))
             return False
 
     def get_data_as_json(self):
-        # if len==1 then the only element is data['country], i.e. there's no real data
-        if len(self.data) == 1:
-            return json.dumps({})
-        else:
+        """ Returns self.data as json string unless the dict contains no 'c' (cases) or no 'd' (deaths)"""
+        if 'c' in self.data or 'd' in self.data:
             return json.dumps(self.data)
+        else:
+            return json.dumps({})
 
     def _str2int(self, value) -> int:
         return int(str(value).replace(".", ""))

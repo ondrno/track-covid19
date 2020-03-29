@@ -3,7 +3,7 @@ import requests
 from loguru import logger
 from collections import OrderedDict
 import cov19
-from cov19 import DataCollector
+from cov19.collect import DataCollector
 
 
 class Germany(DataCollector):

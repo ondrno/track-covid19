@@ -2,10 +2,10 @@ import pytest
 import json
 import responses
 import pathlib
-from cov19 import UnitedStates
+from cov19.collect import UnitedStates
 
 
-base_path = pathlib.Path(__file__).parent
+base_path = pathlib.Path(__file__).parent.parent
 
 
 @responses.activate
