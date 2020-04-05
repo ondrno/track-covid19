@@ -19,16 +19,16 @@ def at():
 def test_get_cov19_data_returns_values(at: Austria):
     expected = {"country": "AT",
                 "provinces": {
-                    "BL": {"c": 138, "d": 2},
-                    "K": {"c": 202, "d": 2},
-                    "NO": {"c": 1217, "d": 4},
-                    "OO": {"c": 1217, "d": 4},
-                    "SB": {"c": 687, "d": 1},
-                    "ST": {"c": 759, "d": 13},
-                    "T": {"c": 1752, "d": 6},
-                    "V": {"c": 501, "d": 1},
-                    "W": {"c": 1003, "d": 16}
-                }, "c": 7399, "d": 58}
+                    "BL": {"c": 226, "d": 3},
+                    "K": {"c": 319, "d": 4},
+                    "NO": {"c": 1903, "d": 31},
+                    "OO": {"c": 1932, "d": 20},
+                    "SB": {"c": 1069, "d": 14},
+                    "ST": {"c": 1311, "d": 53},
+                    "T": {"c": 2704, "d": 35},
+                    "V": {"c": 742, "d": 4},
+                    "W": {"c": 1701, "d": 40}
+                }, "c": 11907, "d": 204}
     with open("{}/res/at_fallzahlen.html".format(base_path)) as f:
         body = f.read()
         responses.add(responses.GET, at.url, body=body, status=200)
