@@ -127,7 +127,8 @@ def update_covid_cases_metrics(n):
             {'x': us["date"], 'y': us["c"], 'name': "United States"},
         ],
         'layout': {
-            'title': 'Confirmed cases'
+            'title': 'Confirmed cases',
+            'yaxis': {'type': 'log'},
         }
     }
     return fig
@@ -145,7 +146,8 @@ def update_covid_deaths_metrics(n):
             {'x': us["date"], 'y': us["d"], 'name': "United States"},
         ],
         'layout': {
-            'title': 'Confirmed deaths'
+            'title': 'Confirmed deaths',
+            'yaxis': {'type': 'log'},
         }
     }
     return fig

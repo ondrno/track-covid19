@@ -37,20 +37,42 @@ provinces of that country.
 
 Example:
 
-    {"country": "DE", "c": 48582, "d": 325, "date": "2020-03-28T19:27:00"}
-    {"country": "AT", "provinces": {"BL": {"c": 142, "d": 2}, "K": {"c": 221, "d": 2}, "NO": {"c": 1332, "d": 4}, "OO": {"c": 1332, "d": 4}, "SB": {"c": 751, "d": 4}, "ST": {"c": 828, "d": 17}, "T": {"c": 1846, "d": 9}, "V": {"c": 549, "d": 1}, "W": {"c": 1046, "d": 16}}, "c": 7995, "d": 68, "date": "2020-03-28T19:27:00"}
-    {"country": "CH", "c": 13213, "d": 235, "date": "2020-03-28T19:27:00"}
-    {"country": "UK", "c": 17089, "d": 1019, "date": "2020-03-28T19:27:00"}
-    {"country": "US", "c": 85356, "d": 1246, "date": "2020-03-28T19:27:00"}
+    {"country": "DE", "c": 91714, "d": 1342, "provinces": {"BW": {"c": 18614, "d": 367}, "BY": {"c": 23846, "d": 396}, "BE": {"c": 3613, "d": 24}, "BB": {"c": 1305, "d": 17}, "HB": {"c": 394, "d": 6}, "HH": {"c": 2945, "d": 19}, "HE": {"c": 4575, "d": 56}, "MV": {"c": 523, "d": 5}, "NI": {"c": 5712, "d": 89}, "NW": {"c": 18735, "d": 245}, "RP": {"c": 3663, "d": 32}, "SL": {"c": 1358, "d": 14}, "SN": {"c": 2741, "d": 32}, "ST": {"c": 919, "d": 12}, "SH": {"c": 1631, "d": 18}, "TH": {"c": 1140, "d": 10}}, "date": "2020-04-06T00:13:00"}
+    {"country": "AT", "provinces": {"BL": {"c": 226, "d": 3}, "K": {"c": 319, "d": 4}, "NO": {"c": 1903, "d": 31}, "OO": {"c": 1932, "d": 20}, "SB": {"c": 1069, "d": 14}, "ST": {"c": 1311, "d": 53}, "T": {"c": 2704, "d": 35}, "V": {"c": 742, "d": 4}, "W": {"c": 1701, "d": 40}}, "c": 11907, "d": 204, "date": "2020-04-06T00:13:00"}
+    {"country": "CH", "c": 21100, "d": 559, "date": "2020-04-06T00:13:00"}
+    {"country": "UK", "c": 47806, "d": 4934, "date": "2020-04-06T00:13:00"}
+    {"country": "US", "c": 304826, "d": 7616, "date": "2020-04-06T00:13:00"}
 
 ### Austria
 For Austria the total numbers and the ones from the provinces are tracked.
 - BL - Burgenland
-- K - Carinthia / Kaernten
-- NO - Lower Austria / Niederoesterreich
-- OO - Upper Austria / Oberoesterreich
+- K - Carinthia / Kärnten
+- NO - Lower Austria / Niederösterreich
+- OO - Upper Austria / Oberösterreich
 - SB - Salzburg
 - ST - Styria / Steiermark
 - T - Tyrol / Tirol
 - V - Vorarlberg
 - W - Vienna / Wien
+
+### Germany
+For Germany the total numbers and the ones from the provinces are tracked, short names similar to 
+[ISO 3166-2:DE](https://de.wikipedia.org/wiki/ISO_3166-2%3ADE) are used, i.e.
+
+- BW - Baden-Würtemberg
+- BY - Bavaria / Bayern
+- BE - Berlin
+- BB - Brandenburg
+- HB - Bremen
+- HH - Hamburg
+- HE - Hessia / Hessen
+- MV - Mecklenburg-Western Pomerania / Mecklenburg-Vorpommern
+- NI - Lower Saxony / Niedersachsen
+- NW - North Rhine-Westphalia / Nordrhein-Westfalen
+- RP - Rhineland Palatinate / Rheinland-Pfalz
+- SL - Saarland
+- SN - Saxony / Sachsen
+- ST - Sachsen-Anhalt
+- SH - Schleswig-Holstein
+- TH - Thuringia / Thüringen
+ 

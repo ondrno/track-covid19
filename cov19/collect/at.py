@@ -9,8 +9,8 @@ class Austria(DataCollector):
     provinces = {
         'Burgenland': {'short_name': 'BL', 'search_pattern': r'Burgenland'},
         'Carinthia': {'short_name':  'K', 'search_pattern': r'K.+rnten'},
-        'Lower Austria': {'short_name': 'NO', 'search_pattern': 'Nieder.+reich'},
-        'Upper Austria': {'short_name': 'OO', 'search_pattern': 'Ober.+reich'},
+        'Lower Austria': {'short_name': 'NO', 'search_pattern': 'Nieder.+?reich'},
+        'Upper Austria': {'short_name': 'OO', 'search_pattern': 'Ober.+?reich'},
         'Salzburg': {'short_name': 'SB', 'search_pattern': 'Salzburg'},
         'Styria': {'short_name': 'ST', 'search_pattern': 'Steiermark'},
         'Tyrol': {'short_name':  'T', 'search_pattern': 'Tirol'},
@@ -22,7 +22,7 @@ class Austria(DataCollector):
         super().__init__("Austria")
         self.provinces = Austria.provinces
         self.url = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
-        self.cases_pattern = r'Best.+tigte F.+lle.+Uhr:.*?([\d.]+) F.+lle'
+        self.cases_pattern = r'Best.+tigte F.+lle.+Uhr.+?:.*?([\d.]+) F.+lle'
         self.deaths_pattern = r'Todesf.+lle.+Uhr:.*?([\d.]+)'
 
     def get_cov19_data(self):
