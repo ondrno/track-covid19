@@ -1,5 +1,6 @@
 import argparse
-from cov19 import Cov19Statistics, Austria, Germany, Switzerland, UnitedKingdom, UnitedStates
+from cov19 import Cov19Statistics
+from cov19.collect import Austria, Germany, Switzerland, UnitedKingdom, UnitedStates
 
 
 version = "2.0.0"
