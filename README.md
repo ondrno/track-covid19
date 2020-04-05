@@ -46,9 +46,9 @@ Example:
 ### Austria
 For Austria the total numbers and the ones from the provinces are tracked.
 - BL - Burgenland
-- K - Carinthia / Kaernten
-- NO - Lower Austria / Niederoesterreich
-- OO - Upper Austria / Oberoesterreich
+- K - Carinthia / Kärnten
+- NO - Lower Austria / Niederösterreich
+- OO - Upper Austria / Oberösterreich
 - SB - Salzburg
 - ST - Styria / Steiermark
 - T - Tyrol / Tirol
