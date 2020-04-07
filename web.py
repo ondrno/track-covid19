@@ -11,6 +11,7 @@ from flask_caching import Cache
 from loguru import logger
 from cov19 import Cov19Statistics, get_query_interval
 from cov19.collect import Austria, Germany, Switzerland, UnitedKingdom, UnitedStates
+import cov19
 
 
 external_stylesheets = [
@@ -92,6 +93,9 @@ def serve_layout():
         ]),
         dcc.Graph(id='covid-cases-graph'),
         dcc.Graph(id='covid-deaths-graph'),
+        html.Br(),
+        dcc.Link('track-covid19', href="https://github.com/ondrno/track-covid19"),
+        html.Span(', version: {}'.format(cov19.__version__)),
     ])
 
 

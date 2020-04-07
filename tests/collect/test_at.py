@@ -48,8 +48,8 @@ def test_get_re_pattern_for_province_invalid_province(at):
 
 
 @pytest.mark.parametrize("what, exp_pattern", [
-    ('c', 'Best.+tigte F.+lle.*?Uhr.*?:.*?([\\d.]+) F.+lle.+?Steiermark.+?(([\\d.]+))'),
-    ('d', 'Todesf.+lle.*?Uhr:.*?([\\d.]+).+?Steiermark.+?(([\\d.]+))')
+    ('c', 'Best.+tigte F.+lle.+?Uhr.*?:.*?([\\d.]+) F.+lle.+?Steiermark.+?(([\\d.]+))'),
+    ('d', 'Todesf.+lle.+?Uhr:.*?([\\d.]+).+?Steiermark.+?(([\\d.]+))')
 ])
 def test_get_re_pattern_for_province_styria(at, what, exp_pattern):
     pattern = at._get_re_pattern_for_province(what, 'Styria')
