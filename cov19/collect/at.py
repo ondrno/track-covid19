@@ -22,8 +22,8 @@ class Austria(DataCollector):
         super().__init__("Austria")
         self.provinces = Austria.provinces
         self.url = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
-        self.cases_pattern = r'Best.+tigte F.+lle.+Uhr.+?:.*?([\d.]+) F.+lle'
-        self.deaths_pattern = r'Todesf.+lle.+Uhr:.*?([\d.]+)'
+        self.cases_pattern = r'Best.+tigte F.+lle.+?Uhr.*?:.*?([\d.]+) F.+lle'
+        self.deaths_pattern = r'Todesf.+lle.+?Uhr:.*?([\d.]+)'
 
     def get_cov19_data(self):
         response = requests.get(self.url)

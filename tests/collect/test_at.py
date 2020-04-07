@@ -19,16 +19,16 @@ def at():
 def test_get_cov19_data_returns_values(at: Austria):
     expected = {"country": "AT",
                 "provinces": {
-                    "BL": {"c": 226, "d": 3},
-                    "K": {"c": 319, "d": 4},
-                    "NO": {"c": 1903, "d": 31},
-                    "OO": {"c": 1932, "d": 20},
-                    "SB": {"c": 1069, "d": 14},
-                    "ST": {"c": 1311, "d": 53},
-                    "T": {"c": 2704, "d": 35},
-                    "V": {"c": 742, "d": 4},
-                    "W": {"c": 1701, "d": 40}
-                }, "c": 11907, "d": 204}
+                    "BL": {"c": 234, "d": 3},
+                    "K": {"c": 341, "d": 4},
+                    "NO": {"c": 2071, "d": 39},
+                    "OO": {"c": 1991, "d": 23},
+                    "SB": {"c": 1094, "d": 16},
+                    "ST": {"c": 1372, "d": 60},
+                    "T": {"c": 2835, "d": 40},
+                    "V": {"c": 768, "d": 5},
+                    "W": {"c": 1813, "d": 53}
+                }, "c": 12519, "d": 243}
     with open("{}/res/at_fallzahlen.html".format(base_path)) as f:
         body = f.read()
         responses.add(responses.GET, at.url, body=body, status=200)
@@ -48,8 +48,8 @@ def test_get_re_pattern_for_province_invalid_province(at):
 
 
 @pytest.mark.parametrize("what, exp_pattern", [
-    ('c', 'Best.+tigte F.+lle.+Uhr.+?:.*?([\\d.]+) F.+lle.+?Steiermark.+?(([\\d.]+))'),
-    ('d', 'Todesf.+lle.+Uhr:.*?([\\d.]+).+?Steiermark.+?(([\\d.]+))')
+    ('c', 'Best.+tigte F.+lle.*?Uhr.*?:.*?([\\d.]+) F.+lle.+?Steiermark.+?(([\\d.]+))'),
+    ('d', 'Todesf.+lle.*?Uhr:.*?([\\d.]+).+?Steiermark.+?(([\\d.]+))')
 ])
 def test_get_re_pattern_for_province_styria(at, what, exp_pattern):
     pattern = at._get_re_pattern_for_province(what, 'Styria')
