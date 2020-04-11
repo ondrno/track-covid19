@@ -4,6 +4,7 @@ import json
 import responses
 import pathlib
 from cov19.collect import Austria
+from .helpers import assert_if_province_data_is_equal, assert_if_provinces_have_no_cases_and_deaths
 
 
 base_path = pathlib.Path(__file__).parent.parent
@@ -13,16 +14,6 @@ base_path = pathlib.Path(__file__).parent.parent
 def at():
     austria = Austria()
     yield austria
-
-
-def assert_if_province_data_is_equal(act_province: str, province_data: dict):
-    """Sanity check of the returned data_set: compares a certain data set with all others
-    and assert if the same data is found twice. This is very unlikely and therefore must not be happen"""
-    needle = province_data[act_province]
-    for province in province_data:
-        if act_province == province:
-            continue
-        assert needle != province_data[province]
 
 
 @responses.activate
@@ -40,21 +31,8 @@ def test_get_cov19_data_returns_values(at: Austria):
         assert 'd' in data, "Could not find 'deaths'"
         assert data['d'] >= 337, 'Invalid number for deaths in AT'.format(337, data['d'])
 
-        for p, p_info in at.provinces.items():
-            short_name = p_info['short_name']
-            assert short_name in data['provinces'], "Could not find province '{} ({})'".format(p, short_name)
-
-            assert 'c' in data['provinces'][short_name], \
-                "Could not find 'cases' for province '{} ({})'".format(p, short_name)
-            cases = data['provinces'][short_name]['c']
-            assert cases > 0, "Invalid number for 'cases' for province '{} ({})'".format(p, short_name)
-
-            assert 'd' in data['provinces'][short_name], \
-                "Could not find 'deaths' for province '{} ({})'".format(p, short_name)
-            deaths = data['provinces'][short_name]['d']
-            assert deaths > 0, "Invalid number for 'deaths' for province '{} ({})'".format(p, short_name)
-
-            assert_if_province_data_is_equal(short_name, data['provinces'])
+        assert_if_provinces_have_no_cases_and_deaths(at, data)
+        assert_if_province_data_is_equal(at, data)
 
 
 def test_get_re_pattern_for_province_invalid_what(at):
