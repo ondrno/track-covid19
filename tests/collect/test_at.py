@@ -4,6 +4,7 @@ import json
 import responses
 import pathlib
 from cov19.collect import Austria
+from .helpers import assert_if_province_data_is_equal, assert_if_provinces_have_no_cases_and_deaths
 
 
 base_path = pathlib.Path(__file__).parent.parent
@@ -17,24 +18,21 @@ def at():
 
 @responses.activate
 def test_get_cov19_data_returns_values(at: Austria):
-    expected = {"country": "AT",
-                "provinces": {
-                    "BL": {"c": 234, "d": 3},
-                    "K": {"c": 341, "d": 4},
-                    "NO": {"c": 2071, "d": 39},
-                    "OO": {"c": 1991, "d": 23},
-                    "SB": {"c": 1094, "d": 16},
-                    "ST": {"c": 1372, "d": 60},
-                    "T": {"c": 2835, "d": 40},
-                    "V": {"c": 768, "d": 5},
-                    "W": {"c": 1813, "d": 53}
-                }, "c": 12519, "d": 243}
     with open("{}/res/at_fallzahlen.html".format(base_path)) as f:
         body = f.read()
         responses.add(responses.GET, at.url, body=body, status=200)
-        data = at.get_cov19_data()
+        raw_data = at.get_cov19_data()
+        data = json.loads(raw_data)
 
-        assert data == json.dumps(expected)
+        assert data['country'] == "AT"
+        assert 'c' in data, "Could not find 'cases'"
+        assert data['c'] >= 13561, 'Invalid number for cases in AT'.format(13561, data['c'])
+
+        assert 'd' in data, "Could not find 'deaths'"
+        assert data['d'] >= 337, 'Invalid number for deaths in AT'.format(337, data['d'])
+
+        assert_if_provinces_have_no_cases_and_deaths(at, data)
+        assert_if_province_data_is_equal(at, data)
 
 
 def test_get_re_pattern_for_province_invalid_what(at):
@@ -45,15 +43,6 @@ def test_get_re_pattern_for_province_invalid_what(at):
 def test_get_re_pattern_for_province_invalid_province(at):
     with pytest.raises(ValueError):
         at._get_re_pattern_for_province('c', 'WienerLand')
-
-
-@pytest.mark.parametrize("what, exp_pattern", [
-    ('c', 'Best.+tigte F.+lle.+?Uhr.*?:.*?([\\d.]+) F.+lle.+?Steiermark.+?(([\\d.]+))'),
-    ('d', 'Todesf.+lle.+?Uhr:.*?([\\d.]+).+?Steiermark.+?(([\\d.]+))')
-])
-def test_get_re_pattern_for_province_styria(at, what, exp_pattern):
-    pattern = at._get_re_pattern_for_province(what, 'Styria')
-    assert pattern == exp_pattern
 
 
 @pytest.mark.parametrize("what, number", [('c', '42'), ('d', '42')])
