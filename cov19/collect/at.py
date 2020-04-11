@@ -22,10 +22,10 @@ class Austria(DataCollector):
         super().__init__("Austria")
         self.provinces = Austria.provinces
         self.url = "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html"
-        self.cases_pattern = r'Best.+tigte F.+lle.+?Uhr.*?:.*?([\d.]+) F.+lle'
-        self.deaths_pattern = r'Todesf.+lle.+?Uhr:.*?([\d.]+)'
+        self.cases_pattern = r'Best.+tigte F.+lle.+?Uhr.*?:[\D]*([\d.]+)[\D]*?F.+lle'
+        self.deaths_pattern = r'Todesf.+lle.+?Uhr[\D]*:[\D]*([\d.]+)'
 
-    def get_cov19_data(self):
+    def get_cov19_data(self) -> str:
         response = requests.get(self.url)
         soup = BeautifulSoup(response.text, "html.parser")
         self.data['provinces'] = OrderedDict()
