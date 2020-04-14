@@ -10,6 +10,12 @@ base_path = pathlib.Path(__file__).parent.parent
 @responses.activate
 def test_get_data_returns_values():
     uk = UnitedKingdom()
-    uk.url = "{}/res/uk_fallzahlen.xlsx".format(base_path)
-    data = uk.get_cov19_data()
-    assert data == json.dumps({"country": "UK", 'c': 797, 'd': 10})
+    with open("{}/res/uk_fallzahlen.html".format(base_path)) as f:
+        body = f.read()
+        responses.add(responses.GET, uk.url, body=body, status=200)
+        raw_data = uk.get_cov19_data()
+        data = json.loads(raw_data)
+
+        assert data['c'] >= 93873
+        assert data['d'] >= 12107
+        assert data['country'] == "UK"

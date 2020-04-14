@@ -44,5 +44,5 @@ class DataCollector:
         else:
             return json.dumps({})
 
-    def _str2int(self, value) -> int:
-        return int(str(value).replace(".", ""))
+    def _str2int(self, value, thousands=".") -> int:
+        return int(str(value).replace(thousands, ""))
