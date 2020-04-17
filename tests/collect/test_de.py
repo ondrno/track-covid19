@@ -26,14 +26,3 @@ def test_get_data_returns_values():
 
         assert_if_provinces_have_no_cases_and_deaths(de, data)
         assert_if_province_data_is_equal(de, data)
-
-
-@responses.activate
-def test_get_data_returns_empty_list():
-    de = Germany()
-    with open("{}/res/at_fallzahlen.html".format(base_path)) as f:
-        body = f.read()
-        responses.add(responses.GET, de.url, body=body, status=200)
-        data = de.get_cov19_data()
-
-        assert data == json.dumps({})
