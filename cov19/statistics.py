@@ -32,10 +32,14 @@ class Cov19Statistics:
 
     def get_todays_statistics(self) -> None:
         for country in self.countries:
-            country.get_cov19_data()
-            country.data['date'] = self._get_datetime_now_as_iso()
-            self.statistics.append(country.get_data_as_json())
-            logger.info(country.get_data_as_json())
+            try:
+                country.get_cov19_data()
+                country.data['date'] = self._get_datetime_now_as_iso()
+                self.statistics.append(country.get_data_as_json())
+                logger.info(country.get_data_as_json())
+            except:
+                logger.error("Could not get data for country={}".format(country))
+                pass
 
     def _get_datetime_now_as_iso(self) -> str:
         today = datetime.now()

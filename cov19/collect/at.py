@@ -1,21 +1,19 @@
 import requests
-import re
 import pandas as pd
-from bs4 import BeautifulSoup
 from collections import OrderedDict
 from cov19.collect import DataCollector
 
 
 class Austria(DataCollector):
     provinces = {
-        'Burgenland': {'short_name': 'BL', 'search_pattern': r'^Bgld\.'},
-        'Carinthia': {'short_name':  'K', 'search_pattern': r'^Kt\.'},
+        'Burgenland': {'short_name': 'BL', 'search_pattern': r'^Bgl'},
+        'Carinthia': {'short_name':  'K', 'search_pattern': r'^Kt'},
         'Lower Austria': {'short_name': 'NO', 'search_pattern': r'^NÖ'},
         'Upper Austria': {'short_name': 'OO', 'search_pattern': r'^OÖ'},
-        'Salzburg': {'short_name': 'SB', 'search_pattern': r'^Sbg\.'},
-        'Styria': {'short_name': 'ST', 'search_pattern': r'^Stmk\.'},
+        'Salzburg': {'short_name': 'SB', 'search_pattern': r'^Sb'},
+        'Styria': {'short_name': 'ST', 'search_pattern': r'^Stm'},
         'Tyrol': {'short_name':  'T', 'search_pattern': r'^T$'},
-        'Vorarlberg': {'short_name':  'V', 'search_pattern': r'^Vbg\.'},
+        'Vorarlberg': {'short_name':  'V', 'search_pattern': r'^Vb'},
         'Vienna': {'short_name':  'W', 'search_pattern': r'^W$'},
     }
 
