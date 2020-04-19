@@ -16,7 +16,7 @@ def test_get_cov19_data_returns_values():
         responses.add(responses.GET, us.url, body=body, status=200)
         data = us.get_cov19_data()
 
-        assert data == json.dumps({"country": "US", 'c': 85356, 'd': 1246})
+        assert data == json.dumps({"country": "US", 'c': 690714, 'd': 35443})
 
 
 @mock.patch('cov19.collect.UnitedStates.check_data')

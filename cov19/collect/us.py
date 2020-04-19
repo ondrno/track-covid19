@@ -12,15 +12,17 @@ class UnitedStates(DataCollector):
     def get_cov19_data(self):
         response = requests.get(self.url)
         soup = BeautifulSoup(response.text, "html.parser")
-        for p in soup.find_all('li'):
-            m = re.search(r'Total cases:\s*([\d,]+)', str(p), re.I | re.M)
+        p = soup.find(id='covid-19-cases-total')
+        if p:
+            m = re.search(r'([\d,]+)', p.get_text(), re.I | re.M)
             if m:
                 cases = m.group(1)
                 cases = int(cases.replace(",", ""))
                 self.data['c'] = cases
-                next
 
-            m = re.search(r'Total deaths:.+?([\d,]+)', str(p), re.I | re.M)
+        p = soup.find(id='covid-19-deaths-total')
+        if p:
+            m = re.search(r'([\d,]+)', p.get_text(), re.I | re.M)
             if m:
                 deaths = m.group(1)
                 deaths = int(deaths.replace(",", ""))
