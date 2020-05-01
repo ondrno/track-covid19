@@ -1,8 +1,7 @@
 ![Python application](https://github.com/ondrno/track-covid19/workflows/Python%20application/badge.svg?branch=master)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/44507ae5a5aa4ff786f7f5709429ed72)](https://app.codacy.com/manual/ondrno/track-covid19?utm_source=github.com&utm_medium=referral&utm_content=ondrno/track-covid19&utm_campaign=Badge_Grade_Dashboard)
 ----
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/44507ae5a5aa4ff786f7f5709429ed72)](https://app.codacy.com/manual/ondrno/track-covid19?utm_source=github.com&utm_medium=referral&utm_content=ondrno/track-covid19&utm_campaign=Badge_Grade_Dashboard)
 
 # track-covid19
 python program to track the covid-19 infection rate in different countries.
@@ -11,12 +10,11 @@ This program collects Corona ``SARS-CoV-2`` infection statistics for DACH region
 the United Kingdom, and the United States on a daily basis. It collects the overall numbers of confirmed infections, 
 people recovered (Austria only), and deaths twice a day. 
 
-- Austria's numbers are based on information from the  
-[Sozialministerium](https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html).
-- Germany's numbers are based on information from the [Robert-Koch-Institute](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html).
-- Switzerland's numbers are based on information from the [Bundesamt für Gesundheit BAG](https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html)
-- United Kingdom's numbers are based on information from [GOV.uk](https://www.arcgis.com/home/item.html?id=e5fd11150d274bebaaf8fe2a7a2bda11)
-- United State's numbers are based on information from [Centers for Disease Control and Prevention](https://www.cdc.gov/coronavirus/2019-ncov/cases-in-us.html)
+  - Austria's numbers are based on information from the [Sozialministerium](https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html).
+  - Germany's numbers are based on information from the [Robert-Koch-Institute](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html).
+  - Switzerland's numbers are based on information from the [Bundesamt für Gesundheit BAG](https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html)
+  - United Kingdom's numbers are based on information from [GOV.uk](https://www.arcgis.com/home/item.html?id=e5fd11150d274bebaaf8fe2a7a2bda11)
+  - United State's numbers are based on information from [Centers for Disease Control and Prevention](https://www.cdc.gov/coronavirus/2019-ncov/cases-in-us.html)
  
 
 The aim of the program is to have a timeline how the SARS-CoV-2 virus spread in these countries.
@@ -47,34 +45,34 @@ Example:
 
 ### Austria
 For Austria the total numbers and the ones from the provinces are tracked.
-- BL - Burgenland
-- K - Carinthia / Kärnten
-- NO - Lower Austria / Niederösterreich
-- OO - Upper Austria / Oberösterreich
-- SB - Salzburg
-- ST - Styria / Steiermark
-- T - Tyrol / Tirol
-- V - Vorarlberg
-- W - Vienna / Wien
+  - BL - Burgenland
+  - K - Carinthia / Kärnten
+  - NO - Lower Austria / Niederösterreich
+  - OO - Upper Austria / Oberösterreich
+  - SB - Salzburg
+  - ST - Styria / Steiermark
+  - T - Tyrol / Tirol
+  - V - Vorarlberg
+  - W - Vienna / Wien
 
 ### Germany
 For Germany the total numbers and the ones from the provinces are tracked, short names similar to 
 [ISO 3166-2:DE](https://de.wikipedia.org/wiki/ISO_3166-2%3ADE) are used, i.e.
 
-- BW - Baden-Würtemberg
-- BY - Bavaria / Bayern
-- BE - Berlin
-- BB - Brandenburg
-- HB - Bremen
-- HH - Hamburg
-- HE - Hessia / Hessen
-- MV - Mecklenburg-Western Pomerania / Mecklenburg-Vorpommern
-- NI - Lower Saxony / Niedersachsen
-- NW - North Rhine-Westphalia / Nordrhein-Westfalen
-- RP - Rhineland Palatinate / Rheinland-Pfalz
-- SL - Saarland
-- SN - Saxony / Sachsen
-- ST - Sachsen-Anhalt
-- SH - Schleswig-Holstein
-- TH - Thuringia / Thüringen
+  - BW - Baden-Würtemberg
+  - BY - Bavaria / Bayern
+  - BE - Berlin
+  - BB - Brandenburg
+  - HB - Bremen
+  - HH - Hamburg
+  - HE - Hessia / Hessen
+  - MV - Mecklenburg-Western Pomerania / Mecklenburg-Vorpommern
+  - NI - Lower Saxony / Niedersachsen
+  - NW - North Rhine-Westphalia / Nordrhein-Westfalen
+  - RP - Rhineland Palatinate / Rheinland-Pfalz
+  - SL - Saarland
+  - SN - Saxony / Sachsen
+  - ST - Sachsen-Anhalt
+  - SH - Schleswig-Holstein
+  - TH - Thuringia / Thüringen
  

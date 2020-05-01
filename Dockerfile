@@ -1,6 +1,6 @@
 FROM python:3.7-slim
 
-RUN apt-get update && apt-get -y install cron && rm -rf /var/lib/apt/lists/*
+RUN apt-get update --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # copy the cov19 application to /app/cov19
 RUN mkdir -p /app/log
