@@ -2,6 +2,8 @@
 
 ----
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/44507ae5a5aa4ff786f7f5709429ed72)](https://app.codacy.com/manual/ondrno/track-covid19?utm_source=github.com&utm_medium=referral&utm_content=ondrno/track-covid19&utm_campaign=Badge_Grade_Dashboard)
+
 # track-covid19
 python program to track the covid-19 infection rate in different countries.
 
