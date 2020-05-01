@@ -3,8 +3,10 @@ import re
 
 
 def _interval_to_ms(value: int, unit: str) -> int:
-    """Convert the value and unit into milliseconds, if the value is not within the
-    valid range (30 min to 24 hours) then the default (4 hours) is used."""
+    """
+    Convert the value and unit into milliseconds, if the value is not within the
+    valid range (30 min to 24 hours) then the default (4 hours) is used.
+    """
     one_minute_in_ms = 60 * 1000
     one_hour_in_ms = 60 * one_minute_in_ms
 
@@ -24,7 +26,8 @@ def _interval_to_ms(value: int, unit: str) -> int:
 
 
 def get_query_interval() -> int:
-    """ Read the env variable 'QUERY_INTERVAL' which determines how often the web sites should be queried.
+    """
+    Read the env variable 'QUERY_INTERVAL' which determines how often the web sites should be queried.
     The time has to be specified with a value + modifier (m|h), e.g. 30m for 30 minutes
 
     Valid ranges: 30 minutes (30m) to 24 hours (24h)

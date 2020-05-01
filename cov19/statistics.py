@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 import pathlib
 from loguru import logger
@@ -39,9 +38,9 @@ class Cov19Statistics:
                 logger.info(country.get_data_as_json())
             except:
                 logger.error("Could not get data for country={}".format(country))
-                pass
 
-    def _get_datetime_now_as_iso(self) -> str:
+    @staticmethod
+    def _get_datetime_now_as_iso() -> str:
         today = datetime.now()
         today = datetime(today.year, today.month, today.day, today.hour, today.minute).isoformat()
         return today

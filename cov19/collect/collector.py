@@ -1,9 +1,6 @@
 import json
-import pandas as pd
-import requests
 from loguru import logger
 from collections import OrderedDict
-import cov19
 
 
 class DataCollector:
@@ -38,7 +35,9 @@ class DataCollector:
             return False
 
     def get_data_as_json(self):
-        """ Returns self.data as json string unless the dict contains no 'c' (cases) or no 'd' (deaths)"""
+        """
+        Returns self.data as json string unless the dict contains no 'c' (cases) or no 'd' (deaths)
+        """
         if 'c' in self.data or 'd' in self.data:
             return json.dumps(self.data)
         else:

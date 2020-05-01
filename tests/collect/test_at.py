@@ -26,10 +26,10 @@ def test_get_cov19_data_returns_values(at: Austria):
 
         assert data['country'] == "AT"
         assert 'c' in data, "Could not find 'cases'"
-        assert data['c'] >= 13561, 'Invalid number for cases in AT'.format(14451, data['c'])
+        assert data['c'] >= 13561, 'Invalid number for cases in AT'
 
         assert 'd' in data, "Could not find 'deaths'"
-        assert data['d'] >= 337, 'Invalid number for deaths in AT'.format(410, data['d'])
+        assert data['d'] >= 337, 'Invalid number for deaths in AT'
 
         assert_if_provinces_have_no_cases_and_deaths(at, data)
         assert_if_province_data_is_equal(at, data)
