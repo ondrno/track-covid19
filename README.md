@@ -1,5 +1,6 @@
 ![Python application](https://github.com/ondrno/track-covid19/workflows/Python%20application/badge.svg?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/44507ae5a5aa4ff786f7f5709429ed72)](https://app.codacy.com/manual/ondrno/track-covid19?utm_source=github.com&utm_medium=referral&utm_content=ondrno/track-covid19&utm_campaign=Badge_Grade_Dashboard)
+[![codecov](https://codecov.io/gh/ondrno/track-covid19/branch/master/graph/badge.svg)](https://codecov.io/gh/ondrno/track-covid19)
 ----
 
 
