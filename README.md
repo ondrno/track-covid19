@@ -46,34 +46,34 @@ Example:
 
 ### Austria
 For Austria the total numbers and the ones from the provinces are tracked.
-  - BL - Burgenland
-  - K - Carinthia / Kärnten
-  - NO - Lower Austria / Niederösterreich
-  - OO - Upper Austria / Oberösterreich
-  - SB - Salzburg
-  - ST - Styria / Steiermark
-  - T - Tyrol / Tirol
-  - V - Vorarlberg
-  - W - Vienna / Wien
+  - BL: Burgenland
+  - K: Carinthia / Kärnten
+  - NO: Lower Austria / Niederösterreich
+  - OO: Upper Austria / Oberösterreich
+  - SB: Salzburg
+  - ST: Styria / Steiermark
+  - T: Tyrol / Tirol
+  - V: Vorarlberg
+  - W: Vienna / Wien
 
 ### Germany
 For Germany the total numbers and the ones from the provinces are tracked, short names similar to 
 [ISO 3166-2:DE](https://de.wikipedia.org/wiki/ISO_3166-2%3ADE) are used, i.e.
 
-  - BW - Baden-Würtemberg
-  - BY - Bavaria / Bayern
-  - BE - Berlin
-  - BB - Brandenburg
-  - HB - Bremen
-  - HH - Hamburg
-  - HE - Hessia / Hessen
-  - MV - Mecklenburg-Western Pomerania / Mecklenburg-Vorpommern
-  - NI - Lower Saxony / Niedersachsen
-  - NW - North Rhine-Westphalia / Nordrhein-Westfalen
-  - RP - Rhineland Palatinate / Rheinland-Pfalz
-  - SL - Saarland
-  - SN - Saxony / Sachsen
-  - ST - Sachsen-Anhalt
-  - SH - Schleswig-Holstein
-  - TH - Thuringia / Thüringen
+  - BW: Baden-Würtemberg
+  - BY: Bavaria / Bayern
+  - BE: Berlin
+  - BB: Brandenburg
+  - HB: Bremen
+  - HH: Hamburg
+  - HE: Hessia / Hessen
+  - MV: Mecklenburg-Western Pomerania / Mecklenburg-Vorpommern
+  - NI: Lower Saxony / Niedersachsen
+  - NW: North Rhine-Westphalia / Nordrhein-Westfalen
+  - RP: Rhineland Palatinate / Rheinland-Pfalz
+  - SL: Saarland
+  - SN: Saxony / Sachsen
+  - ST: Sachsen-Anhalt
+  - SH: Schleswig-Holstein
+  - TH: Thuringia / Thüringen
  
