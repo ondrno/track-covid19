@@ -35,6 +35,6 @@ class UnitedKingdom(DataCollector):
         self.data['c'] = cases
 
     def get_total_deaths(self, table):
-        deaths = table['Deaths'][1]
+        deaths = table['Deaths in all settings'][1]
         deaths = int(deaths)
         self.data['d'] = deaths
