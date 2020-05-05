@@ -83,7 +83,7 @@ def serve_layout():
             dcc.Link('Bundesamt fuer Gesundheit (CH)',
                      href='https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html'),
             ', ',
-            dcc.Link('British Governement (UK)',
+            dcc.Link('British Government (UK)',
                      href='https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public'),
             ', ',
             dcc.Link('Centers for Disease Control and Prevention (US)',
