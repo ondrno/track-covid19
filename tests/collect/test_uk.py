@@ -16,6 +16,6 @@ def test_get_data_returns_values():
         raw_data = uk.get_cov19_data()
         data = json.loads(raw_data)
 
-        assert data['c'] >= 93873
-        assert data['d'] >= 12107
+        assert data['c'] >= 190584
+        assert data['d'] >= 28734
         assert data['country'] == "UK"
