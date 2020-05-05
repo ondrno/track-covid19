@@ -20,7 +20,7 @@ jobs:
           pip install wheel
           pip install pytest-cov
           export PYTHONPATH=$(pwd)
-          python -m pytest tests --cov./ --cov-report=xml
+          python -m pytest tests --cov=./ --cov-report=xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
