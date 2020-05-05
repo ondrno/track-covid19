@@ -17,7 +17,8 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          pip install wheel pytest-cov
+          pip install wheel
+          pip install pytest-cov
           export PYTHONPATH=$(pwd)
           python -m pytest tests --cov./ --cov-report=xml
 
