@@ -84,7 +84,7 @@ def serve_layout():
                      href='https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html'),
             ', ',
             dcc.Link('British Governement (UK)',
-                     href='https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data'),
+                     href='https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public'),
             ', ',
             dcc.Link('Centers for Disease Control and Prevention (US)',
                      href='https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fcoronavirus%2F2019-ncov%2Fcases-in-us.html'),
