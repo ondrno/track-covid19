@@ -30,7 +30,7 @@ class UnitedKingdom(DataCollector):
         return self.get_data_as_json()
 
     def get_total_cases(self, table):
-        cases = table['Positive'][1]
+        cases = table['Number of positive cases'][1]
         cases = int(cases)
         self.data['c'] = cases
 
