@@ -31,7 +31,7 @@ class Germany(DataCollector):
         self.provinces = Germany.provinces
         self.url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
         self.cases_col = 1
-        self.deaths_col = 4
+        self.deaths_col = 5
 
     def get_cov19_data(self) -> OrderedDict:
         try:
