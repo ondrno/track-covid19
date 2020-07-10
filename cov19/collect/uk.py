@@ -20,7 +20,7 @@ class UnitedKingdom(DataCollector):
         if response.status_code == 200:
             try:
                 tables = pd.read_html(response.text, thousands=",", decimal=";")
-                self.get_total_cases(tables[0])
+                self.get_total_cases(tables[1])
                 self.get_total_deaths(tables[0])
             except ValueError:
                 pass
@@ -30,11 +30,11 @@ class UnitedKingdom(DataCollector):
         return self.get_data_as_json()
 
     def get_total_cases(self, table):
-        cases = table['Positive'][1]
+        cases = table['Cumulative'][0]
         cases = int(cases)
         self.data['c'] = cases
 
     def get_total_deaths(self, table):
-        deaths = table['Deaths in all settings'][1]
+        deaths = table['Cumulative'][0]
         deaths = int(deaths)
         self.data['d'] = deaths
