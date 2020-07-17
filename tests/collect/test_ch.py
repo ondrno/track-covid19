@@ -1,4 +1,3 @@
-import pytest
 import json
 import responses
 import pathlib
@@ -14,7 +13,8 @@ def test_get_data_returns_values():
     with open("{}/res/ch_fallzahlen.html".format(base_path)) as f:
         body = f.read()
         responses.add(responses.GET, ch.url, body=body, status=200)
-        data = ch.get_cov19_data()
+        raw_data = ch.get_cov19_data()
 
-        assert data == json.dumps({"country": "CH", 'c': 10714, 'd': 161})
-
+        data = json.loads(raw_data)
+        assert data['c'] >= 33382
+        assert data['d'] >= 1688
