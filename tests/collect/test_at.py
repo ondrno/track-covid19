@@ -46,7 +46,6 @@ def test_get_cov19_data_returns_values(at: Austria):
         }
 
 
-
 @mock.patch('cov19.collect.Austria._get_numbers_by_province')
 def test_get_deaths_by_province_calls_correct_func(mock_get, at):
     at.get_deaths_by_province("deaths")
@@ -57,6 +56,12 @@ def test_get_deaths_by_province_calls_correct_func(mock_get, at):
 def test_get_cases_by_province_calls_correct_func(mock_get, at):
     at.get_cases_by_province("cases")
     mock_get.assert_called_once_with('c', 'cases')
+
+
+@mock.patch('pandas.DataFrame')
+def test_get_numbers_by_province_raises_exception_for_invalid_type(df, at):
+    with pytest.raises(ValueError):
+        at._get_numbers_by_province('a', df)
 
 
 @mock.patch('cov19.collect.Austria.get_cases_by_province')
