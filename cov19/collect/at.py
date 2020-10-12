@@ -1,3 +1,4 @@
+import re
 import requests
 import pandas as pd
 from collections import OrderedDict
@@ -56,7 +57,9 @@ class Austria(DataCollector):
             else:
                 case_idx = 1
             province_cases = df.filter(regex=pattern)
-            cases = int(province_cases.iloc[case_idx])
+            cases_raw = str(province_cases.iloc[case_idx][0])
+            cases = re.sub(r'\D', '', cases_raw)
+            cases = int(cases)
             if not self.data.get('provinces'):
                 self.data['provinces'] = OrderedDict()
             if not self.data['provinces'].get(short_name):
