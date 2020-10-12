@@ -45,6 +45,18 @@ def test_get_cov19_data_returns_values(at: Austria):
             'W': {'c': 20811, 'd': 274}
         }
 
+        assert data['provinces'] == {
+            'BL': {'c': 1141, 'd': 11},
+            'K': {'c': 1232, 'd': 13},
+            'NO': {'c': 8585, 'd': 127},
+            'OO': {'c': 8231, 'd': 76},
+            'SB': {'c': 2912, 'd': 43},
+            'ST': {'c': 4227, 'd': 175},
+            'T': {'c': 7111, 'd': 110},
+            'V': {'c': 2437, 'd': 26},
+            'W': {'c': 20811, 'd': 274}
+        }
+
 
 @mock.patch('cov19.collect.Austria._get_numbers_by_province')
 def test_get_deaths_by_province_calls_correct_func(mock_get, at):
